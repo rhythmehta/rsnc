@@ -1,0 +1,9 @@
+# robots.txt for https://rsnc.tech
+# Allow full crawling; block build artifacts if any
+User-agent: *
+Allow: /
+
+# Host and Sitemap hints
+Host: https://rsnc.tech
+Sitemap: https://rsnc.tech/sitemap.xml
+

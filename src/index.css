@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base defaults to match desired hero look */
+html, body, #root {
+  height: 100%;
+}
+body {
+  margin: 0;
+  background: #ffffff;
+  color: #111827; /* gray-900 */
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+}
