@@ -5,6 +5,7 @@ import type React from "react";
 import { useMemo, useRef } from "react";
 import * as THREE from "three";
 import BlurEffect from "react-progressive-blur";
+import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
 
 interface HelixRingsProps {
     levelsUp?: number;
@@ -129,9 +130,10 @@ const Scene: React.FC = () => {
 interface HeroProps {
   title: string;
   description: string;
+  onCtaClick?: () => void;
 }
 
-export const Hero: React.FC<HeroProps> = ({ title, description }) => {
+export const Hero: React.FC<HeroProps> = ({ title, description, onCtaClick }) => {
   return (
     <section className="relative h-screen w-screen font-sans tracking-tight text-gray-900 bg-white overflow-hidden">
       {/* Top-left logo */}
@@ -139,7 +141,7 @@ export const Hero: React.FC<HeroProps> = ({ title, description }) => {
         <img
           src="/rsnc-tech-company-logo.png"
           alt="Resonance Technology logo"
-          className="h-24 w-auto md:h-28 lg:h-32"
+          className="h-48 w-auto"
           draggable={false}
         />
       </div>
@@ -153,6 +155,13 @@ export const Hero: React.FC<HeroProps> = ({ title, description }) => {
         <p className="mt-3 text-xs text-gray-600 tracking-tight">
           AI Agents • Workflow Automations • Fine‑Tuned LLMs • Production AI Apps
         </p>
+        <div className="mt-6">
+          <InteractiveHoverButton
+            text="Let's Talk"
+            className="bg-white/80 text-gray-900 backdrop-blur-sm"
+            onClick={onCtaClick}
+          />
+        </div>
       </div>
       <BlurEffect className="absolute bg-gradient-to-b from-transparent to-white/20 h-1/2 md:h-1/3 w-full bottom-0" position="bottom" intensity={50} />
       <BlurEffect className="absolute bg-gradient-to-b from-white/20 to-transparent h-1/2 md:h-1/3 w-full top-0" position="top" intensity={50} />
@@ -161,5 +170,3 @@ export const Hero: React.FC<HeroProps> = ({ title, description }) => {
 };
 
 export default Hero;
-
-

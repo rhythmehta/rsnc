@@ -2,6 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+    --primary: 191 64% 53%;
+    --primary-foreground: 0 0% 100%;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
 /* Base defaults to match desired hero look */
 html, body, #root {
   height: 100%;
