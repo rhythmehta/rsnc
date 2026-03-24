@@ -128,14 +128,26 @@ const Scene: React.FC = () => {
 };
 
 interface HeroProps {
+  eyebrow?: string;
   title: string;
   description: string;
+  serviceLine?: string;
+  ctaText?: string;
+  ctaSupport?: string;
   onCtaClick?: () => void;
 }
 
-export const Hero: React.FC<HeroProps> = ({ title, description, onCtaClick }) => {
+export const Hero: React.FC<HeroProps> = ({
+  eyebrow,
+  title,
+  description,
+  serviceLine,
+  ctaText = "Let's Talk",
+  ctaSupport,
+  onCtaClick,
+}) => {
   return (
-    <section className="relative h-screen w-screen font-sans tracking-tight text-gray-900 bg-white overflow-hidden">
+    <section className="relative min-h-screen w-screen overflow-hidden bg-white font-sans tracking-tight text-gray-900">
       {/* Top-left logo */}
       <div className="absolute top-4 left-4 md:top-6 md:left-6 z-30 select-none">
         <img
@@ -149,18 +161,34 @@ export const Hero: React.FC<HeroProps> = ({ title, description, onCtaClick }) =>
         <Scene />
       </div>
 
-      <div className="absolute bottom-4 left-4 md:bottom-10 md:left-10 z-20 max-w-md">
-        <h1 className="text-3xl font-light tracking-tight mb-3">{title}</h1>
-        <p className="text-gray-700 text-sm leading-relaxed font-light tracking-tight">{description}</p>
-        <p className="mt-3 text-xs text-gray-600 tracking-tight">
-          AI Agents • Workflow Automations • Fine‑Tuned LLMs • Production AI Apps
-        </p>
-        <div className="mt-6">
+      <div className="absolute inset-x-4 bottom-4 z-20 md:inset-x-auto md:bottom-10 md:left-10">
+        <div className="max-w-xl rounded-[2rem] border border-white/70 bg-white/78 p-6 shadow-[0_24px_80px_rgba(15,23,42,0.12)] backdrop-blur-md md:p-8">
+          {eyebrow ? (
+            <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#0f6d7b]">
+              {eyebrow}
+            </p>
+          ) : null}
+          <h1 className="mt-3 text-4xl font-light tracking-tight text-slate-950 md:text-5xl">{title}</h1>
+          <p className="mt-4 text-base leading-relaxed font-light tracking-tight text-slate-700 md:text-lg">
+            {description}
+          </p>
+          {serviceLine ? (
+            <p className="mt-4 text-sm tracking-tight text-slate-600">
+              {serviceLine}
+            </p>
+          ) : null}
+          <div className="mt-6">
           <InteractiveHoverButton
-            text="Let's Talk"
+            text={ctaText}
             className="bg-white/80 text-gray-900 backdrop-blur-sm"
             onClick={onCtaClick}
           />
+            {ctaSupport ? (
+              <p className="mt-3 max-w-md text-sm leading-relaxed text-slate-600">
+                {ctaSupport}
+              </p>
+            ) : null}
+          </div>
         </div>
       </div>
       <BlurEffect className="absolute bg-gradient-to-b from-transparent to-white/20 h-1/2 md:h-1/3 w-full bottom-0" position="bottom" intensity={50} />
