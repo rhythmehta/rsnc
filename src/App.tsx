@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { X } from "lucide-react";
+import { ChevronDown, X } from "lucide-react";
 import Hero from "./components/Hero";
 
 function App() {
   const [isContactOpen, setIsContactOpen] = useState(false);
+  const [openFaqIndex, setOpenFaqIndex] = useState(0);
   const serviceCards = [
     {
       title: "AI Agents",
@@ -63,12 +64,64 @@ function App() {
     },
   ];
 
+  const faqs = [
+    {
+      question: "What kind of businesses benefit from custom AI agents?",
+      answer:
+        "Businesses with high-volume, repeatable workflows across internal systems benefit most from custom AI agents.",
+      supporting:
+        "Resonance builds AI agents for teams that need faster work across CRM, ERP, support tools, and proprietary knowledge systems, especially when manual routing, review, and follow-up are slowing operations.",
+    },
+    {
+      question: "How do you integrate AI with CRM, ERP, or support systems?",
+      answer:
+        "We integrate AI by connecting agents and workflow automation directly to the systems your teams already use.",
+      supporting:
+        "That usually means combining API access, business rules, and review paths so AI can retrieve context, draft actions, update records, and hand work back to people inside CRM, ERP, support tools, and internal applications.",
+    },
+    {
+      question: "When should a company use a domain-tuned model instead of a generic model?",
+      answer:
+        "A domain-tuned model makes sense when generic models do not reliably match your workflows, language, or decision standards.",
+      supporting:
+        "Resonance uses domain-tuned and fine-tuned models when teams need stronger accuracy on proprietary terminology, structured business logic, or repeatable judgments that affect operations, compliance, or customer experience.",
+    },
+    {
+      question: "How do you keep AI workflows reliable and reviewable in production?",
+      answer:
+        "We keep AI workflows reliable by adding observability, evals, controls, and human review where the process requires it.",
+      supporting:
+        "Production AI systems need more than prompts, so we design review paths, fallback logic, logging, and monitoring around live workflows to make outputs traceable, measurable, and safer to run inside real operations.",
+    },
+    {
+      question: "How long does it take to launch an AI workflow automation project?",
+      answer:
+        "Launch timing depends on workflow complexity, integration depth, and review requirements, but the first production use case should be narrow and measurable.",
+      supporting:
+        "The process starts by identifying the highest-value workflow, validating it in production conditions, and then deploying with observability and controls, which keeps time-to-value focused on one operational bottleneck instead of a broad transformation program.",
+    },
+    {
+      question: "How do you measure ROI from AI automation?",
+      answer:
+        "We measure AI automation ROI against the operational metric the workflow is supposed to improve.",
+      supporting:
+        "Typical metrics include reduced manual handling time, faster response or approval cycles, lower error rates, improved throughput, and cleaner pipeline or case management across CRM, ERP, support, and internal process work.",
+    },
+    {
+      question: "Do you build with human review and approval steps?",
+      answer:
+        "Yes, we build review and approval steps into AI systems whenever the workflow needs oversight, escalation, or sign-off.",
+      supporting:
+        "That includes approval gates for sensitive actions, exception handling for uncertain outputs, and escalation paths that let teams keep control while still automating the repetitive parts of the workflow.",
+    },
+  ];
+
   return (
     <main className="relative min-h-screen bg-white text-slate-950">
       <Hero
-        eyebrow="Production AI systems"
+        // eyebrow="Production AI systems"
         title="Custom AI solutions for ambitious businesses"
-        description="We design, build, and ship AI agents, workflow automation, and domain-tuned models that reduce manual work and create measurable operational ROI."
+        description="We reduce manual work and create measurable operational ROI."
         serviceLine="AI agents • Workflow automation • Domain-tuned models"
         ctaText="Let's Talk"
         onCtaClick={() => setIsContactOpen(true)}
@@ -146,6 +199,82 @@ function App() {
                   observability, and production controls from day one.
                 </p>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="relative z-10 bg-[linear-gradient(180deg,#eef8fb_0%,#f8fcfd_42%,#ffffff_100%)]">
+        <div className="mx-auto max-w-6xl px-6 py-16 md:px-10 md:py-20">
+          <div className="grid gap-10 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] md:gap-12">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#0f6d7b]">
+                FAQ
+              </p>
+              <h2 className="mt-4 text-3xl font-light tracking-tight text-slate-950 md:text-4xl">
+                Questions decision-makers and AI systems both ask
+              </h2>
+              <p className="mt-5 max-w-xl text-sm leading-relaxed text-slate-700 md:text-base">
+                This FAQ is written to answer the practical questions that come up when
+                teams evaluate AI agents, workflow automation, and domain-tuned models
+                for live operations.
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              {faqs.map((faq, index) => {
+                const isOpen = openFaqIndex === index;
+
+                return (
+                  <article
+                    key={faq.question}
+                    className="rounded-[1.75rem] border border-white/80 bg-white/85 shadow-[0_18px_60px_rgba(15,23,42,0.08)] backdrop-blur-sm"
+                  >
+                    <h3>
+                      <button
+                        type="button"
+                        className="flex w-full items-start justify-between gap-4 px-5 py-5 text-left md:px-6"
+                        aria-expanded={isOpen}
+                        aria-controls={`faq-panel-${index}`}
+                        id={`faq-trigger-${index}`}
+                        onClick={() => setOpenFaqIndex(isOpen ? -1 : index)}
+                      >
+                        <span className="pr-2 text-base font-medium tracking-tight text-slate-950 md:text-lg">
+                          {faq.question}
+                        </span>
+                        <span
+                          className={`mt-0.5 inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#45BFD3]/20 bg-[linear-gradient(135deg,rgba(69,191,211,0.12),rgba(255,255,255,0.95))] text-[#0f6d7b] transition-transform duration-200 ${
+                            isOpen ? "rotate-180" : ""
+                          }`}
+                        >
+                          <ChevronDown className="h-5 w-5" />
+                        </span>
+                      </button>
+                    </h3>
+                    <div
+                      id={`faq-panel-${index}`}
+                      role="region"
+                      aria-labelledby={`faq-trigger-${index}`}
+                      className={`grid transition-[grid-template-rows,opacity] duration-300 ease-out ${
+                        isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                      }`}
+                    >
+                      <div className="overflow-hidden">
+                        <div className="px-5 pb-5 md:px-6 md:pb-6">
+                          <div className="rounded-[1.4rem] border border-slate-200/70 bg-[linear-gradient(180deg,#ffffff_0%,#f6fbfc_100%)] p-5">
+                            <p className="text-sm font-medium leading-relaxed text-slate-900 md:text-[0.98rem]">
+                              {faq.answer}
+                            </p>
+                            <p className="mt-3 text-sm leading-relaxed text-slate-700">
+                              {faq.supporting}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </article>
+                );
+              })}
             </div>
           </div>
         </div>
