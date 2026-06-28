@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Resonance Technology social preview</title>
+  <desc id="desc">AI agents and workflow automation for B2B operations.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff" />
+      <stop offset="0.58" stop-color="#f4fbfd" />
+      <stop offset="1" stop-color="#dff6fa" />
+    </linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff" />
+      <stop offset="1" stop-color="#edf9fb" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <circle cx="1040" cy="112" r="210" fill="#45bfd3" opacity="0.16" />
+  <circle cx="108" cy="560" r="180" fill="#0f6d7b" opacity="0.10" />
+  <rect x="72" y="72" width="1056" height="486" rx="34" fill="url(#panel)" stroke="#bfe7ee" stroke-width="2" />
+  <g transform="translate(118 116)">
+    <rect x="0" y="0" width="92" height="92" rx="24" fill="#0f6d7b" />
+    <path d="M24 57c28-46 50-46 44 0" fill="none" stroke="#45bfd3" stroke-width="9" stroke-linecap="round" />
+    <path d="M26 36c21 22 40 22 61 0" fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round" opacity="0.92" />
+    <text x="122" y="58" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="700">Resonance Technology</text>
+  </g>
+  <text x="118" y="278" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="56" font-weight="650">AI agents and workflow</text>
+  <text x="118" y="346" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="56" font-weight="650">automation for B2B operations</text>
+  <text x="122" y="462" fill="#475569" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="400">
+    Production AI systems connected to CRM, ERP, support, and internal tools.
+  </text>
+  <g transform="translate(118 512)" fill="#0f6d7b" font-family="Inter, Arial, sans-serif" font-size="21" font-weight="700">
+    <rect x="0" y="0" width="132" height="44" rx="22" fill="#ffffff" stroke="#9edce6" />
+    <text x="23" y="29">AI agents</text>
+    <rect x="150" y="0" width="226" height="44" rx="22" fill="#ffffff" stroke="#9edce6" />
+    <text x="173" y="29">Workflow automation</text>
+    <rect x="394" y="0" width="222" height="44" rx="22" fill="#ffffff" stroke="#9edce6" />
+    <text x="417" y="29">Domain-tuned models</text>
+  </g>
+</svg>

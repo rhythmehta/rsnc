@@ -1,138 +1,20 @@
-import { Canvas, useFrame } from "@react-three/fiber";
-import { Bloom, EffectComposer } from "@react-three/postprocessing";
-import { KernelSize } from "postprocessing";
+import { lazy, Suspense } from "react";
 import type React from "react";
-import { useMemo, useRef } from "react";
-import * as THREE from "three";
 import BlurEffect from "react-progressive-blur";
 import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
 
-interface HelixRingsProps {
-    levelsUp?: number;
-    levelsDown?: number;
-    stepY?: number;
-    rotationStep?: number;
-}
-
-const HelixRings: React.FC<HelixRingsProps> = ({
-    levelsUp = 10,
-    levelsDown = 10,
-    stepY = 0.85,
-    rotationStep = Math.PI / 16,
-}) => {
-    const groupRef = useRef<THREE.Group>(new THREE.Group());
-
-    useFrame(() => {
-        if (groupRef.current) {
-            groupRef.current.rotation.y += 0.005;
-        }
-    });
-
-    const ringGeometry = useMemo(() => {
-        const shape = new THREE.Shape();
-        const radius = 0.35;
-        shape.absarc(0, 0, radius, 0, Math.PI * 2, false);
-
-        const depth = 10;
-        const extrudeSettings: THREE.ExtrudeGeometryOptions = {
-            depth,
-            bevelEnabled: true,
-            bevelThickness: 0.05,
-            bevelSize: 0.05,
-            bevelSegments: 4,
-            curveSegments: 64,
-        };
-
-        const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
-        geometry.translate(0, 0, -depth / 2);
-
-        return geometry;
-    }, []);
-
-    const elements = [] as { id: string; y: number; rotation: number }[];
-    for (let i = -levelsDown; i <= levelsUp; i++) {
-        elements.push({
-            id: `helix-ring-${i}`,
-            y: i * stepY,
-            rotation: i * rotationStep,
-        });
-    }
-
-    return (
-        <group
-            scale={1}
-            position={[5, 0, 0]}
-            ref={groupRef}
-            rotation={[0, 0, 0]}
-        >
-            {elements.map((el) => (
-                <mesh
-                    key={el.id}
-                    geometry={ringGeometry}
-                    position={[0, el.y, 0]}
-                    rotation={[0, Math.PI / 2 + el.rotation, 0]}
-                    castShadow
-                >
-                    <meshPhysicalMaterial
-                        color="#45BFD3"
-                        metalness={0.7}
-                        roughness={0.5}
-                        clearcoat={0}
-                        clearcoatRoughness={0.15}
-                        reflectivity={0}
-                        iridescence={0.96}
-                        iridescenceIOR={1.5}
-                        iridescenceThicknessRange={[100, 400]}
-                    />
-                </mesh>
-            ))}
-        </group>
-    );
-};
-
-const Scene: React.FC = () => {
-    return (
-        <Canvas
-            className="h-full w-full"
-            orthographic
-            shadows
-            camera={{
-                zoom: 70,
-                position: [0, 0, 7],
-                near: 0.1,
-                far: 1000,
-            }}
-            gl={{ antialias: true }}
-            style={{ background: "#ffffff" }}
-        >
-            <hemisphereLight color={"#cfe8ff"} groundColor={"#ffffff"} intensity={2} />
-
-            <directionalLight
-                position={[10, 10, 5]}
-                intensity={2}
-                castShadow
-                color={"#ffeedd"}
-                shadow-mapSize-width={2048}
-                shadow-mapSize-height={2048}
-            />
-
-            <HelixRings />
-
-            <EffectComposer multisampling={8}>
-                <Bloom kernelSize={3} luminanceThreshold={0} luminanceSmoothing={0.4} intensity={0.6} />
-                <Bloom kernelSize={KernelSize.HUGE} luminanceThreshold={0} luminanceSmoothing={0} intensity={0.5} />
-            </EffectComposer>
-            {/* <Perf position="top-left" /> */}
-        </Canvas>
-    );
-};
+const HeroScene = lazy(() => import("./HeroScene"));
 
 interface HeroProps {
   eyebrow?: string;
   title: string;
   description: string;
   serviceLine?: string;
+  navLinks?: Array<{ label: string; href: string }>;
   ctaText?: string;
+  ctaHref?: string;
+  secondaryCtaText?: string;
+  secondaryCtaHref?: string;
   ctaSupport?: string;
   onCtaClick?: () => void;
 }
@@ -142,7 +24,11 @@ export const Hero: React.FC<HeroProps> = ({
   title,
   description,
   serviceLine,
+  navLinks,
   ctaText = "Let's Talk",
+  ctaHref = "/contact/",
+  secondaryCtaText = "Explore services",
+  secondaryCtaHref = "/services/ai-agents/",
   ctaSupport,
   onCtaClick,
 }) => {
@@ -157,8 +43,26 @@ export const Hero: React.FC<HeroProps> = ({
           draggable={false}
         />
       </div>
+      {navLinks?.length ? (
+        <nav
+          className="absolute right-4 top-4 z-30 flex max-w-[calc(100vw-2rem)] flex-wrap justify-end gap-2 rounded-full border border-white/70 bg-white/78 px-3 py-2 text-xs font-medium text-slate-700 shadow-sm backdrop-blur-md md:right-6 md:top-6 md:gap-3 md:text-sm"
+          aria-label="Primary"
+        >
+          {navLinks.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              className="rounded-full px-2 py-1 transition hover:bg-[#45BFD3]/10 hover:text-[#0f6d7b]"
+            >
+              {link.label}
+            </a>
+          ))}
+        </nav>
+      ) : null}
       <div className="absolute inset-0 z-0">
-        <Scene />
+        <Suspense fallback={<div className="h-full w-full bg-white" />}>
+          <HeroScene />
+        </Suspense>
       </div>
 
       <div className="absolute inset-x-4 bottom-4 z-20 md:inset-x-auto md:bottom-10 md:left-10">
@@ -177,14 +81,23 @@ export const Hero: React.FC<HeroProps> = ({
               {serviceLine}
             </p>
           ) : null}
-          <div className="mt-6">
-          <InteractiveHoverButton
-            text={ctaText}
-            className="bg-white/80 text-gray-900 backdrop-blur-sm"
-            onClick={onCtaClick}
-          />
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            <InteractiveHoverButton
+              text={ctaText}
+              className="bg-white/80 text-gray-900 backdrop-blur-sm"
+              onClick={onCtaClick}
+            />
+            <a
+              href={secondaryCtaHref}
+              className="inline-flex min-h-10 items-center rounded-full border border-[#45BFD3]/25 bg-white/75 px-4 text-sm font-semibold text-[#0f6d7b] shadow-sm backdrop-blur-sm transition hover:border-[#45BFD3]/50 hover:bg-white"
+            >
+              {secondaryCtaText}
+            </a>
+            <a className="sr-only" href={ctaHref}>
+              Contact Resonance Technology
+            </a>
             {ctaSupport ? (
-              <p className="mt-3 max-w-md text-sm leading-relaxed text-slate-600">
+              <p className="basis-full max-w-md text-sm leading-relaxed text-slate-600">
                 {ctaSupport}
               </p>
             ) : null}

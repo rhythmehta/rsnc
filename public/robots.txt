@@ -1,15 +1,22 @@
 # robots.txt for https://rsnc.tech
-# Allow full crawling; block build artifacts if any
+# Search and answer-engine crawlers may index the public site.
 User-agent: *
 Allow: /
 
-# Host and Sitemap hints
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
 Host: https://rsnc.tech
 Sitemap: https://rsnc.tech/sitemap.xml
-
-
-
-
-
-
-

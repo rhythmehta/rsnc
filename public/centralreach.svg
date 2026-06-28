@@ -1,0 +1,67 @@
+<svg version="1.1" id="Layer_1" xmlns:x="ns_extend;" xmlns:i="ns_ai;" xmlns:graph="ns_graphs;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 150 98.2" style="enable-background:new 0 0 150 98.2;" xml:space="preserve">
+ <style type="text/css">
+  .st0{clip-path:url(#SVGID_2_);}
+	.st1{clip-path:url(#SVGID_4_);}
+	.st2{fill:#002158;}
+	.st3{fill:#00C4B3;}
+	.st4{enable-background:new    ;}
+ </style>
+ <metadata>
+  <sfw xmlns="ns_sfw;">
+   <slices>
+   </slices>
+   <sliceSourceBounds bottomLeftOrigin="true" height="98.2" width="150" x="0" y="0">
+   </sliceSourceBounds>
+  </sfw>
+ </metadata>
+ <g id="a">
+ </g>
+ <g id="b">
+  <g id="c">
+   <g id="d">
+    <g>
+     <g>
+      <defs>
+       <rect id="SVGID_1_" width="150" height="98.2">
+       </rect>
+      </defs>
+      <clipPath id="SVGID_2_">
+       <use href="#SVGID_1_" style="overflow:visible;">
+       </use>
+      </clipPath>
+      <g class="st0">
+       <g>
+        <g>
+         <defs>
+          <rect id="SVGID_3_" width="150" height="98.2">
+          </rect>
+         </defs>
+         <clipPath id="SVGID_4_">
+          <use xlink:href="#SVGID_3_" style="overflow:visible;">
+          </use>
+         </clipPath>
+         <g class="st1">
+          <path class="st2" d="M64,67.2l16.6,9.4c-7.2,11-19.5,17.3-36,17.3C15.4,93.8,0,73.2,0,47.3S14.1,0,41,0
+										c20.1,0,34.2,12.1,35.3,32.2H57.8c-0.4-6.5-5.3-15.7-16.9-15.7c-14.5,0-21.1,15.1-21.1,30.7s7.4,30,25.1,30
+										C54.5,77.3,60.6,72.9,64,67.2">
+          </path>
+          <path class="st3" d="M144.9,41.8c0-14-11.8-21.4-20.2-22.7c-0.2-3.9-5.2-19-26.7-19C87.2,0,79,4.5,73.8,11.8
+										c3.8,5.6,6,12.4,6.4,20.2l0.2,4.2H67.5v17.3c0,3.9-0.7,7.4-1.7,10L82.6,73c2.3-4.7,4.2-10.7,4.2-19.8V35
+										c0-11.8,5.6-18.6,13.8-18.6c7.1,0,12.3,6.4,11.9,13.2c7.9,0.1,13.2,5.6,13.2,11.8s-6.5,13.8-21,13.8H97L119.6,94h23.9
+										l-17.9-29.2C131.7,63.5,144.9,57.1,144.9,41.8">
+          </path>
+          <g class="st4">
+           <path class="st3" d="M145.3,92.4v-0.3h1.4v0.3H145.3z M145.8,93.9v-1.6h0.4v1.6H145.8z M147,93.9v-1.7h0.4v1.7H147z
+											 M147.9,93.9l-0.8-1.7h0.3l0.5,1.2l0.5-1.2h0.3L147.9,93.9L147.9,93.9z M148.6,93.9v-1.7h0.4v1.7H148.6z">
+           </path>
+          </g>
+         </g>
+        </g>
+       </g>
+      </g>
+     </g>
+    </g>
+   </g>
+  </g>
+ </g>
+</svg>

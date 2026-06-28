@@ -1,129 +1,34 @@
 import { useState } from "react";
 import { ChevronDown, X } from "lucide-react";
+import CompanyBrainFlow from "./components/CompanyBrainFlow";
 import Hero from "./components/Hero";
+import {
+  faqs,
+  homePage,
+  navLinks,
+  processSteps,
+  proofPoints,
+  servicePages,
+  useCasePages,
+} from "./seo/content";
 
 function App() {
   const [isContactOpen, setIsContactOpen] = useState(false);
   const [openFaqIndex, setOpenFaqIndex] = useState(0);
-  const serviceCards = [
-    {
-      title: "AI Agents",
-      description:
-        "Agents that retrieve context and take action across internal systems.",
-    },
-    {
-      title: "Workflow Automation",
-      description:
-        "Automate repetitive work across email, CRM, ERP, and support tools.",
-    },
-    {
-      title: "Domain-Tuned Models",
-      description:
-        "Fine-tuned and domain-tuned models built for your workflows, language, and decisions.",
-    },
-  ];
-
-  const useCases = [
-    {
-      title: "Customer support",
-      description: "AI triage, drafting, and escalation.",
-    },
-    {
-      title: "Operations",
-      description: "Multi-step workflows across approvals and systems.",
-    },
-    {
-      title: "Knowledge teams",
-      description: "Domain-aware assistants over proprietary docs and SOPs.",
-    },
-    {
-      title: "Revenue operations",
-      description: "Routing, enrichment, follow-up, and pipeline hygiene.",
-    },
-    {
-      title: "Compliance and risk",
-      description: "Review workflows, policy checks, and audit-ready traceability.",
-    },
-  ];
-
-  const processSteps = [
-    {
-      step: "01",
-      title: "Identify the highest-value workflow",
-      description: "Pick the best first use case and define success.",
-    },
-    {
-      step: "02",
-      title: "Build and validate in production conditions",
-      description: "Add evals, review paths, and integration logic.",
-    },
-    {
-      step: "03",
-      title: "Deploy, monitor, and iterate",
-      description: "Launch with observability, controls, and iteration.",
-    },
-  ];
-
-  const faqs = [
-    {
-      question: "What kind of businesses benefit from custom AI agents?",
-      answer:
-        "Businesses with high-volume, repeatable workflows across internal systems benefit most from custom AI agents.",
-      supporting:
-        "Resonance builds AI agents for teams that need faster work across CRM, ERP, support tools, and proprietary knowledge systems, especially when manual routing, review, and follow-up are slowing operations.",
-    },
-    {
-      question: "How do you integrate AI with CRM, ERP, or support systems?",
-      answer:
-        "We integrate AI by connecting agents and workflow automation directly to the systems your teams already use.",
-      supporting:
-        "That usually means combining API access, business rules, and review paths so AI can retrieve context, draft actions, update records, and hand work back to people inside CRM, ERP, support tools, and internal applications.",
-    },
-    {
-      question: "When should a company use a domain-tuned model instead of a generic model?",
-      answer:
-        "A domain-tuned model makes sense when generic models do not reliably match your workflows, language, or decision standards.",
-      supporting:
-        "Resonance uses domain-tuned and fine-tuned models when teams need stronger accuracy on proprietary terminology, structured business logic, or repeatable judgments that affect operations, compliance, or customer experience.",
-    },
-    {
-      question: "How do you keep AI workflows reliable and reviewable in production?",
-      answer:
-        "We keep AI workflows reliable by adding observability, evals, controls, and human review where the process requires it.",
-      supporting:
-        "Production AI systems need more than prompts, so we design review paths, fallback logic, logging, and monitoring around live workflows to make outputs traceable, measurable, and safer to run inside real operations.",
-    },
-    {
-      question: "How long does it take to launch an AI workflow automation project?",
-      answer:
-        "Launch timing depends on workflow complexity, integration depth, and review requirements, but the first production use case should be narrow and measurable.",
-      supporting:
-        "The process starts by identifying the highest-value workflow, validating it in production conditions, and then deploying with observability and controls, which keeps time-to-value focused on one operational bottleneck instead of a broad transformation program.",
-    },
-    {
-      question: "How do you measure ROI from AI automation?",
-      answer:
-        "We measure AI automation ROI against the operational metric the workflow is supposed to improve.",
-      supporting:
-        "Typical metrics include reduced manual handling time, faster response or approval cycles, lower error rates, improved throughput, and cleaner pipeline or case management across CRM, ERP, support, and internal process work.",
-    },
-    {
-      question: "Do you build with human review and approval steps?",
-      answer:
-        "Yes, we build review and approval steps into AI systems whenever the workflow needs oversight, escalation, or sign-off.",
-      supporting:
-        "That includes approval gates for sensitive actions, exception handling for uncertain outputs, and escalation paths that let teams keep control while still automating the repetitive parts of the workflow.",
-    },
-  ];
 
   return (
     <main className="relative min-h-screen bg-white text-slate-950">
       <Hero
-        // eyebrow="Production AI systems"
-        title="Custom AI solutions for ambitious businesses"
-        description="We reduce manual work and create measurable operational ROI."
-        serviceLine="AI agents • Workflow automation • Domain-tuned models"
+        eyebrow={homePage.heroEyebrow}
+        title={homePage.h1}
+        description={homePage.summary}
+        serviceLine={homePage.serviceLine}
+        navLinks={navLinks}
         ctaText="Let's Talk"
+        ctaHref="/contact/"
+        secondaryCtaText="Explore AI agents"
+        secondaryCtaHref="/services/ai-agents/"
+        ctaSupport="Built for CRM, ERP, support, revenue, and internal operations workflows that need measurable ROI."
         onCtaClick={() => setIsContactOpen(true)}
       />
 
@@ -134,17 +39,72 @@ function App() {
               What We Build
             </p>
             <h2 className="mt-4 text-3xl font-light tracking-tight text-slate-950 md:text-4xl">
-              Three ways to put AI into production
+              Production AI systems for operations work
             </h2>
+            <p className="mt-5 text-sm leading-relaxed text-slate-700 md:text-base">
+              Direct answers for teams evaluating AI agents, workflow automation, and
+              domain-tuned models for live B2B operations.
+            </p>
           </div>
           <div className="mt-10 grid gap-4 md:grid-cols-3">
-            {serviceCards.map((card) => (
-              <article
-                key={card.title}
-                className="rounded-[1.75rem] border border-slate-200/80 bg-[linear-gradient(180deg,#ffffff_0%,#f5fbfc_100%)] p-6 shadow-[0_18px_60px_rgba(15,23,42,0.06)]"
+            {servicePages.map((service) => (
+              <a
+                key={service.path}
+                href={service.path}
+                className="flex items-center gap-5 rounded-[1.75rem] border border-slate-200/80 bg-[linear-gradient(180deg,#ffffff_0%,#f5fbfc_100%)] p-5 shadow-[0_18px_60px_rgba(15,23,42,0.06)]"
               >
-                <h3 className="text-xl font-medium tracking-tight text-slate-950">{card.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-slate-700">{card.description}</p>
+                <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-[1.25rem] border border-[#45BFD3]/20 bg-[linear-gradient(135deg,rgba(69,191,211,0.14),rgba(255,255,255,0.9))]">
+                  <div
+                    aria-hidden="true"
+                    className="h-[76px] w-[62px] bg-[#0f6d7b]"
+                    style={{
+                      WebkitMaskImage: `url(${service.image})`,
+                      maskImage: `url(${service.image})`,
+                      WebkitMaskPosition: "center",
+                      maskPosition: "center",
+                      WebkitMaskRepeat: "no-repeat",
+                      maskRepeat: "no-repeat",
+                      WebkitMaskSize: "contain",
+                      maskSize: "contain",
+                    }}
+                  />
+                </div>
+                <div className="min-w-0">
+                  <h3 className="text-xl font-medium tracking-tight text-slate-950">{service.shortTitle}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-slate-700">{service.summary}</p>
+                  <p className="mt-4 text-xs font-semibold uppercase tracking-[0.18em] text-[#0f6d7b]">
+                    Read service page
+                  </p>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <CompanyBrainFlow />
+
+      <section className="relative z-10 bg-white">
+        <div className="mx-auto max-w-6xl px-6 py-16 md:px-10 md:py-20">
+          <div className="max-w-3xl">
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#0f6d7b]">
+              Anonymized Proof
+            </p>
+            <h2 className="mt-4 text-3xl font-light tracking-tight text-slate-950 md:text-4xl">
+              Evidence without unsupported claims
+            </h2>
+            <p className="mt-5 text-sm leading-relaxed text-slate-700 md:text-base">
+              {homePage.proofIntro}
+            </p>
+          </div>
+          <div className="mt-10 grid gap-4 md:grid-cols-3">
+            {proofPoints.map((proof) => (
+              <article
+                key={proof.title}
+                className="rounded-[1.6rem] border border-slate-200/80 bg-[linear-gradient(180deg,#ffffff_0%,#f7fbfc_100%)] p-6 shadow-[0_18px_50px_rgba(15,23,42,0.05)]"
+              >
+                <h3 className="text-xl font-medium tracking-tight text-slate-950">{proof.title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-slate-700">{proof.description}</p>
               </article>
             ))}
           </div>
@@ -159,17 +119,21 @@ function App() {
                 Where AI Creates Value
               </p>
               <h2 className="mt-4 text-3xl font-light tracking-tight text-slate-950 md:text-4xl">
-                Outcomes that map
+                Use cases for B2B operations leaders
               </h2>
               <div className="mt-8 grid gap-4">
-                {useCases.map((useCase) => (
-                  <div
-                    key={useCase.title}
-                    className="rounded-[1.5rem] border border-white/80 bg-white/80 p-5 shadow-sm backdrop-blur-sm"
+                {useCasePages.map((useCase) => (
+                  <a
+                    key={useCase.path}
+                    href={useCase.path}
+                    className="rounded-[1.5rem] border border-white/80 bg-white/80 p-5 shadow-sm backdrop-blur-sm transition hover:border-[#45BFD3]/40 hover:bg-white"
                   >
-                    <h3 className="text-base font-semibold tracking-tight text-slate-950">{useCase.title}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-slate-700">{useCase.description}</p>
-                  </div>
+                    <h3 className="text-base font-semibold tracking-tight text-slate-950">{useCase.shortTitle}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-slate-700">{useCase.summary}</p>
+                    <p className="mt-3 text-xs font-semibold uppercase tracking-[0.16em] text-[#0f6d7b]">
+                      View use case
+                    </p>
+                  </a>
                 ))}
               </div>
             </div>
@@ -198,6 +162,11 @@ function App() {
                   Built for CRM, ERP, support, and internal tool integrations with review paths,
                   observability, and production controls from day one.
                 </p>
+                <div className="mt-4 flex flex-wrap gap-3 text-sm font-semibold text-[#0f6d7b]">
+                  <a href="/services/workflow-automation/">Workflow automation</a>
+                  <a href="/services/domain-tuned-models/">Domain-tuned models</a>
+                  <a href="/contact/">Contact page</a>
+                </div>
               </div>
             </div>
           </div>
@@ -219,6 +188,12 @@ function App() {
                 teams evaluate AI agents, workflow automation, and domain-tuned models
                 for live operations.
               </p>
+              <a
+                href="/faq/"
+                className="mt-6 inline-flex rounded-full border border-[#45BFD3]/25 bg-white px-4 py-2 text-sm font-semibold text-[#0f6d7b] shadow-sm transition hover:border-[#45BFD3]/50"
+              >
+                Read the full FAQ
+              </a>
             </div>
 
             <div className="space-y-4">
