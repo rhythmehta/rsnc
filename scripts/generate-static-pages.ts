@@ -1,5 +1,6 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
+import { primaryCta as primaryCtaConfig } from "../src/cta.ts";
 import {
   allStaticPages,
   contactPage,
@@ -70,6 +71,22 @@ function nav() {
     <a href="/">Home</a>
     ${navLinks.map((link) => `<a href="${link.href}">${escapeHtml(link.label)}</a>`).join("")}
   </nav>`;
+}
+
+function primaryCta(href = primaryCtaConfig.href) {
+  const text = escapeHtml(primaryCtaConfig.text);
+
+  return `<a class="primary-cta" href="${href}">
+    <span class="primary-cta__label">${text}</span>
+    <span class="primary-cta__hover" aria-hidden="true">
+      <span>${text}</span>
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+        <path d="M5 12h14"></path>
+        <path d="m12 5 7 7-7 7"></path>
+      </svg>
+    </span>
+    <span class="primary-cta__fill" aria-hidden="true"></span>
+  </a>`;
 }
 
 function commonSchema(page: SeoPage, extra: Record<string, unknown>[] = []) {
@@ -224,7 +241,7 @@ function ctaBlock() {
     <h2 id="cta-title">Review the workflow you want AI to improve</h2>
     <p>Share the operational process, bottleneck, or outcome you want to improve. We look for fit, integration risk, review requirements, and the most practical first production use case.</p>
     <div class="actions">
-      <a class="button" href="/contact/">Let's Talk</a>
+      ${primaryCta()}
     </div>
   </section>`;
 }
@@ -253,7 +270,7 @@ function homeBody() {
         <p class="summary">${escapeHtml(homePage.summary)}</p>
         <p class="service-line">${escapeHtml(homePage.serviceLine)}</p>
         <div class="actions">
-          <a class="button" href="/contact/">Let's Talk</a>
+          ${primaryCta()}
         </div>
       </section>
 
@@ -355,7 +372,7 @@ function renderServicePage(service: ServicePage) {
       <p class="summary">${escapeHtml(service.summary)}</p>
       <div class="answer-box"><strong>Direct answer:</strong> ${escapeHtml(service.directAnswer)}</div>
       <div class="actions">
-        <a class="button" href="/contact/">Let's Talk</a>
+        ${primaryCta()}
       </div>
     </section>
 
@@ -402,7 +419,7 @@ function renderUseCasePage(useCase: UseCasePage) {
       <p class="summary">${escapeHtml(useCase.summary)}</p>
       <div class="answer-box"><strong>Direct answer:</strong> ${escapeHtml(useCase.directAnswer)}</div>
       <div class="actions">
-        <a class="button" href="/contact/">Let's Talk</a>
+        ${primaryCta()}
       </div>
     </section>
 
@@ -454,7 +471,7 @@ function renderContactPage() {
       <h1>${escapeHtml(contactPage.h1)}</h1>
       <p class="summary">${escapeHtml(contactPage.summary)}</p>
       <div class="actions">
-        <a class="button" href="${site.formUrl}">Let's Talk</a>
+        ${primaryCta(site.formUrl)}
       </div>
     </section>
     <section aria-labelledby="fit-title">
@@ -664,21 +681,72 @@ body {
   gap: 12px;
   margin-top: 24px;
 }
-.seo-page .button {
-  display: inline-flex;
+.seo-page .primary-cta {
+  position: relative;
+  display: inline-block;
+  width: 128px;
+  overflow: hidden;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.8);
+  color: #111827;
+  padding: 8px;
+  text-align: center;
+  font-weight: 700;
+  line-height: 1.5;
+  text-decoration: none;
+  backdrop-filter: blur(8px);
+}
+.seo-page .primary-cta:hover {
+  color: #111827;
+  text-decoration: none;
+}
+.seo-page .primary-cta__label {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  transform: translateX(4px);
+  transition: transform 300ms ease, opacity 300ms ease;
+}
+.seo-page .primary-cta__hover {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 46px;
-  border-radius: 999px;
-  border: 1px solid var(--teal);
-  background: var(--teal);
+  gap: 8px;
   color: #ffffff;
-  padding: 0 18px;
-  font-weight: 700;
+  opacity: 0;
+  transform: translateX(48px);
+  transition: transform 300ms ease, opacity 300ms ease;
 }
-.seo-page .button.secondary {
-  background: #ffffff;
-  color: var(--teal);
+.seo-page .primary-cta__fill {
+  position: absolute;
+  left: 20%;
+  top: 40%;
+  z-index: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 8px;
+  background: var(--teal-bright);
+  transform: scale(1);
+  transition: left 300ms ease, top 300ms ease, width 300ms ease, height 300ms ease, transform 300ms ease;
+}
+.seo-page .primary-cta:hover .primary-cta__label {
+  opacity: 0;
+  transform: translateX(48px);
+}
+.seo-page .primary-cta:hover .primary-cta__hover {
+  opacity: 1;
+  transform: translateX(-4px);
+}
+.seo-page .primary-cta:hover .primary-cta__fill {
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  transform: scale(1.8);
 }
 .seo-page .grid {
   display: grid;

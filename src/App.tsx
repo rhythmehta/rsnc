@@ -24,7 +24,6 @@ function App() {
         description={homePage.summary}
         serviceLine={homePage.serviceLine}
         navLinks={navLinks}
-        ctaText="Let's Talk"
         ctaHref="/contact/"
         ctaSupport="Built for CRM, ERP, support, revenue, and internal operations workflows that need measurable ROI."
         onCtaClick={() => setIsContactOpen(true)}

@@ -1,7 +1,8 @@
 import { lazy, Suspense } from "react";
 import type React from "react";
 import BlurEffect from "react-progressive-blur";
-import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
+import { primaryCta } from "@/cta";
+import { PrimaryCta } from "@/components/PrimaryCta";
 
 const HeroScene = lazy(() => import("./HeroScene"));
 
@@ -11,7 +12,6 @@ interface HeroProps {
   description: string;
   serviceLine?: string;
   navLinks?: Array<{ label: string; href: string }>;
-  ctaText?: string;
   ctaHref?: string;
   ctaSupport?: string;
   onCtaClick?: () => void;
@@ -23,8 +23,7 @@ export const Hero: React.FC<HeroProps> = ({
   description,
   serviceLine,
   navLinks,
-  ctaText = "Let's Talk",
-  ctaHref = "/contact/",
+  ctaHref = primaryCta.href,
   ctaSupport,
   onCtaClick,
 }) => {
@@ -78,13 +77,9 @@ export const Hero: React.FC<HeroProps> = ({
             </p>
           ) : null}
           <div className="mt-6 flex flex-wrap items-center gap-3">
-            <InteractiveHoverButton
-              text={ctaText}
-              className="bg-white/80 text-gray-900 backdrop-blur-sm"
-              onClick={onCtaClick}
-            />
+            <PrimaryCta onClick={onCtaClick} />
             <a className="sr-only" href={ctaHref}>
-              {ctaText}
+              {primaryCta.text}
             </a>
             {ctaSupport ? (
               <p className="basis-full max-w-md text-sm leading-relaxed text-slate-600">
