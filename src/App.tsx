@@ -26,8 +26,6 @@ function App() {
         navLinks={navLinks}
         ctaText="Let's Talk"
         ctaHref="/contact/"
-        secondaryCtaText="Explore AI agents"
-        secondaryCtaHref="/services/ai-agents/"
         ctaSupport="Built for CRM, ERP, support, revenue, and internal operations workflows that need measurable ROI."
         onCtaClick={() => setIsContactOpen(true)}
       />

@@ -224,8 +224,7 @@ function ctaBlock() {
     <h2 id="cta-title">Review the workflow you want AI to improve</h2>
     <p>Share the operational process, bottleneck, or outcome you want to improve. We look for fit, integration risk, review requirements, and the most practical first production use case.</p>
     <div class="actions">
-      <a class="button" href="/contact/">Contact Resonance</a>
-      <a class="button secondary" href="${site.formUrl}">Open the brief form</a>
+      <a class="button" href="/contact/">Let's Talk</a>
     </div>
   </section>`;
 }
@@ -254,8 +253,7 @@ function homeBody() {
         <p class="summary">${escapeHtml(homePage.summary)}</p>
         <p class="service-line">${escapeHtml(homePage.serviceLine)}</p>
         <div class="actions">
-          <a class="button" href="/contact/">Book an AI workflow review</a>
-          <a class="button secondary" href="/services/ai-agents/">Explore AI agents</a>
+          <a class="button" href="/contact/">Let's Talk</a>
         </div>
       </section>
 
@@ -357,8 +355,7 @@ function renderServicePage(service: ServicePage) {
       <p class="summary">${escapeHtml(service.summary)}</p>
       <div class="answer-box"><strong>Direct answer:</strong> ${escapeHtml(service.directAnswer)}</div>
       <div class="actions">
-        <a class="button" href="/contact/">Discuss this workflow</a>
-        <a class="button secondary" href="/faq/">Read FAQ</a>
+        <a class="button" href="/contact/">Let's Talk</a>
       </div>
     </section>
 
@@ -405,8 +402,7 @@ function renderUseCasePage(useCase: UseCasePage) {
       <p class="summary">${escapeHtml(useCase.summary)}</p>
       <div class="answer-box"><strong>Direct answer:</strong> ${escapeHtml(useCase.directAnswer)}</div>
       <div class="actions">
-        <a class="button" href="/contact/">Review this use case</a>
-        <a class="button secondary" href="/services/workflow-automation/">See workflow automation</a>
+        <a class="button" href="/contact/">Let's Talk</a>
       </div>
     </section>
 
@@ -458,8 +454,7 @@ function renderContactPage() {
       <h1>${escapeHtml(contactPage.h1)}</h1>
       <p class="summary">${escapeHtml(contactPage.summary)}</p>
       <div class="actions">
-        <a class="button" href="${site.formUrl}">Open the workflow brief form</a>
-        <a class="button secondary" href="/services/ai-agents/">Review services first</a>
+        <a class="button" href="${site.formUrl}">Let's Talk</a>
       </div>
     </section>
     <section aria-labelledby="fit-title">

@@ -13,8 +13,6 @@ interface HeroProps {
   navLinks?: Array<{ label: string; href: string }>;
   ctaText?: string;
   ctaHref?: string;
-  secondaryCtaText?: string;
-  secondaryCtaHref?: string;
   ctaSupport?: string;
   onCtaClick?: () => void;
 }
@@ -27,8 +25,6 @@ export const Hero: React.FC<HeroProps> = ({
   navLinks,
   ctaText = "Let's Talk",
   ctaHref = "/contact/",
-  secondaryCtaText = "Explore services",
-  secondaryCtaHref = "/services/ai-agents/",
   ctaSupport,
   onCtaClick,
 }) => {
@@ -87,14 +83,8 @@ export const Hero: React.FC<HeroProps> = ({
               className="bg-white/80 text-gray-900 backdrop-blur-sm"
               onClick={onCtaClick}
             />
-            <a
-              href={secondaryCtaHref}
-              className="inline-flex min-h-10 items-center rounded-full border border-[#45BFD3]/25 bg-white/75 px-4 text-sm font-semibold text-[#0f6d7b] shadow-sm backdrop-blur-sm transition hover:border-[#45BFD3]/50 hover:bg-white"
-            >
-              {secondaryCtaText}
-            </a>
             <a className="sr-only" href={ctaHref}>
-              Contact Resonance Technology
+              {ctaText}
             </a>
             {ctaSupport ? (
               <p className="basis-full max-w-md text-sm leading-relaxed text-slate-600">
