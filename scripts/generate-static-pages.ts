@@ -565,17 +565,17 @@ body {
   color: var(--ink);
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
-a {
+.seo-page a {
   color: var(--teal);
   text-decoration: none;
 }
-a:hover {
+.seo-page a:hover {
   text-decoration: underline;
 }
 .seo-page {
   min-height: 100vh;
 }
-.site-header {
+.seo-page .site-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -584,42 +584,42 @@ a:hover {
   margin: 0 auto;
   padding: 20px 24px;
 }
-.brand {
+.seo-page .brand {
   display: inline-flex;
   align-items: center;
   gap: 12px;
   color: var(--ink);
   font-weight: 700;
 }
-.brand img {
+.seo-page .brand img {
   width: 48px;
   height: 48px;
   border-radius: 10px;
 }
-nav {
+.seo-page nav {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: 14px;
   font-size: 14px;
 }
-section {
+.seo-page section {
   max-width: 1120px;
   margin: 0 auto;
   padding: 56px 24px;
 }
-.hero {
+.seo-page .hero {
   min-height: 560px;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
-.hero.compact {
+.seo-page .hero.compact {
   min-height: auto;
   padding-top: 72px;
 }
-.eyebrow,
-.step {
+.seo-page .eyebrow,
+.seo-page .step {
   margin: 0 0 14px;
   color: var(--teal);
   font-size: 12px;
@@ -627,49 +627,49 @@ section {
   letter-spacing: 0.18em;
   text-transform: uppercase;
 }
-h1,
-h2,
-h3 {
+.seo-page h1,
+.seo-page h2,
+.seo-page h3 {
   margin: 0;
   letter-spacing: 0;
 }
-h1 {
+.seo-page h1 {
   max-width: 860px;
   font-size: clamp(40px, 8vw, 76px);
   line-height: 0.98;
   font-weight: 500;
 }
-h2 {
+.seo-page h2 {
   max-width: 760px;
   font-size: clamp(30px, 4vw, 46px);
   line-height: 1.05;
   font-weight: 500;
 }
-h3 {
+.seo-page h3 {
   font-size: 21px;
   line-height: 1.2;
 }
-p,
-li {
+.seo-page p,
+.seo-page li {
   color: var(--muted);
   font-size: 17px;
   line-height: 1.7;
 }
-.summary {
+.seo-page .summary {
   max-width: 780px;
   font-size: 21px;
 }
-.service-line {
+.seo-page .service-line {
   color: var(--teal);
   font-weight: 700;
 }
-.actions {
+.seo-page .actions {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
   margin-top: 24px;
 }
-.button {
+.seo-page .button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -681,73 +681,73 @@ li {
   padding: 0 18px;
   font-weight: 700;
 }
-.button.secondary {
+.seo-page .button.secondary {
   background: #ffffff;
   color: var(--teal);
 }
-.grid {
+.seo-page .grid {
   display: grid;
   gap: 18px;
   margin-top: 28px;
 }
-.grid.two {
+.seo-page .grid.two {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
-.grid.three {
+.seo-page .grid.three {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
-.card,
-.answer-box,
-.cta-band {
+.seo-page .card,
+.seo-page .answer-box,
+.seo-page .cta-band {
   border: 1px solid var(--line);
   border-radius: 18px;
   background: linear-gradient(180deg, #ffffff 0%, var(--soft) 100%);
   padding: 24px;
 }
-.link-card {
+.seo-page .link-card {
   display: block;
   color: var(--ink);
 }
-.link-card:hover {
+.seo-page .link-card:hover {
   border-color: var(--teal-bright);
   text-decoration: none;
 }
-.card img {
+.seo-page .card img {
   display: block;
   margin-bottom: 18px;
 }
-.answer-box {
+.seo-page .answer-box {
   max-width: 880px;
   margin-top: 24px;
   color: var(--muted);
   font-size: 17px;
   line-height: 1.7;
 }
-.faq-list {
+.seo-page .faq-list {
   display: grid;
   gap: 16px;
   margin-top: 28px;
 }
-.faq-list article {
+.seo-page .faq-list article {
   border-bottom: 1px solid var(--line);
   padding-bottom: 18px;
 }
-.cta-band {
+.seo-page .cta-band {
   margin-bottom: 56px;
 }
 @media (max-width: 820px) {
-  .site-header {
+  .seo-page .site-header {
     align-items: flex-start;
     flex-direction: column;
   }
-  nav {
+  .seo-page nav {
     justify-content: flex-start;
   }
-  .grid.two,
-  .grid.three {
+  .seo-page .grid.two,
+  .seo-page .grid.three {
     grid-template-columns: 1fr;
   }
-  .hero {
+  .seo-page .hero {
     min-height: auto;
     padding-top: 56px;
   }
