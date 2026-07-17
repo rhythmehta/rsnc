@@ -3,13 +3,13 @@ import { dirname, join } from "node:path";
 import { primaryCta as primaryCtaConfig } from "../src/cta.ts";
 import {
   allStaticPages,
+  clientWork,
   contactPage,
   faqPage,
   faqs,
   homePage,
   navLinks,
   processSteps,
-  proofPoints,
   servicePages,
   site,
   useCasePages,
@@ -76,7 +76,7 @@ function nav() {
 function primaryCta(href = primaryCtaConfig.href) {
   const text = escapeHtml(primaryCtaConfig.text);
 
-  return `<a class="primary-cta" href="${href}">
+  return `<a class="primary-cta" href="${href}" data-contact-modal-trigger>
     <span class="primary-cta__label">${text}</span>
     <span class="primary-cta__hover" aria-hidden="true">
       <span>${text}</span>
@@ -87,6 +87,63 @@ function primaryCta(href = primaryCtaConfig.href) {
     </span>
     <span class="primary-cta__fill" aria-hidden="true"></span>
   </a>`;
+}
+
+function contactModal() {
+  return `<div class="contact-modal" data-contact-modal hidden>
+    <button type="button" class="contact-modal__backdrop" data-contact-modal-close aria-label="Close contact popup"></button>
+    <div class="contact-modal__panel" role="dialog" aria-modal="true" aria-labelledby="contact-modal-title">
+      <div class="contact-modal__intro">
+        <p class="eyebrow">AI Strategy Call</p>
+        <h2 id="contact-modal-title">Review the workflow you want AI to improve</h2>
+        <p>Share the process, bottleneck, or business outcome you want to improve. We review every brief directly and come back with a practical first step.</p>
+        <div class="contact-modal__notes">
+          <div>Senior team review within one business day</div>
+          <div>Best fit for AI agents, workflow automation, and production AI applications</div>
+          <div>We look for the best first use case, integration risks, and ROI potential</div>
+        </div>
+      </div>
+      <div class="contact-modal__form">
+        <button type="button" class="contact-modal__close" data-contact-modal-close aria-label="Close contact popup">&times;</button>
+        <div class="contact-modal__frame">
+          <iframe src="${site.formUrl}" loading="lazy" width="100%" height="700" frameborder="0" marginheight="0" marginwidth="0" title="Resonance contact form"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function contactModalScript() {
+  return `<script>
+(() => {
+  const modal = document.querySelector("[data-contact-modal]");
+  if (!modal) return;
+
+  const closeModal = () => {
+    modal.hidden = true;
+    document.documentElement.classList.remove("contact-modal-open");
+  };
+  const openModal = () => {
+    modal.hidden = false;
+    document.documentElement.classList.add("contact-modal-open");
+    const closeButton = modal.querySelector("[data-contact-modal-close]");
+    if (closeButton instanceof HTMLElement) closeButton.focus();
+  };
+
+  document.querySelectorAll("[data-contact-modal-trigger]").forEach((trigger) => {
+    trigger.addEventListener("click", (event) => {
+      event.preventDefault();
+      openModal();
+    });
+  });
+  modal.querySelectorAll("[data-contact-modal-close]").forEach((trigger) => {
+    trigger.addEventListener("click", closeModal);
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !modal.hidden) closeModal();
+  });
+})();
+</script>`;
 }
 
 function commonSchema(page: SeoPage, extra: Record<string, unknown>[] = []) {
@@ -104,6 +161,15 @@ function commonSchema(page: SeoPage, extra: Record<string, unknown>[] = []) {
       },
       foundingDate: site.foundingDate,
       description: site.description,
+      knowsAbout: [
+        "Healthcare artificial intelligence",
+        "EHR integrations",
+        "Telehealth software",
+        "AI agents",
+        "Workflow automation",
+        "Domain-tuned language models",
+        "Clinical operations software",
+      ],
     },
     {
       "@type": "WebSite",
@@ -220,6 +286,8 @@ function shell(page: SeoPage, body: string, schema: unknown, includeAssets = fal
   ${pageHead(page, schema, includeAssets)}
   <body>
     ${body}
+    ${contactModal()}
+    ${contactModalScript()}
   </body>
 </html>
 `;
@@ -290,16 +358,23 @@ function homeBody() {
         </div>
       </section>
 
-      <section aria-labelledby="proof-title">
-        <p class="eyebrow">Anonymized Proof</p>
-        <h2 id="proof-title">Evidence without unsupported claims</h2>
-        <p>${escapeHtml(homePage.proofIntro)}</p>
-        <div class="grid three">
-          ${proofPoints
+      <section aria-labelledby="client-work-title">
+        <p class="eyebrow">Selected Client Work</p>
+        <h2 id="client-work-title">Products built with ambitious teams</h2>
+        <p>Experience across healthcare AI, EHR integrations, telehealth, clinical operations, academic research, public services, marketplaces, and connected fitness.</p>
+        <div class="client-grid">
+          ${clientWork
             .map(
-              (proof) => `<article class="card">
-                <h3>${escapeHtml(proof.title)}</h3>
-                <p>${escapeHtml(proof.description)}</p>
+              (client) => `<article class="client-card">
+                <div class="client-logo">
+                  ${
+                    client.logo
+                      ? `<img src="${client.logo}" alt="${escapeHtml(client.name)} logo" loading="lazy"${client.darkLogo ? ' class="dark-logo"' : ""} />`
+                      : `<span>${escapeHtml(client.name)}</span>`
+                  }
+                </div>
+                <h3>${escapeHtml(client.name)}</h3>
+                <p>${escapeHtml(client.description)}</p>
               </article>`,
             )
             .join("")}
@@ -471,7 +546,7 @@ function renderContactPage() {
       <h1>${escapeHtml(contactPage.h1)}</h1>
       <p class="summary">${escapeHtml(contactPage.summary)}</p>
       <div class="actions">
-        ${primaryCta(site.formUrl)}
+        ${primaryCta()}
       </div>
     </section>
     <section aria-labelledby="fit-title">
@@ -548,9 +623,15 @@ ${useCasePages
 
 ## Evidence and Safety
 
-- Uses anonymized workflow proof when client names cannot be published.
+- Publishes selected named client work across healthcare, research, public services, marketplaces, social products, and connected fitness.
 - Measures ROI through workflow-specific metrics such as manual handling time, cycle time, throughput, error rate, SLA attainment, and data quality.
 - Builds production controls including evals, logs, scoped tool access, fallback paths, and human review gates.
+
+## Selected Client Work
+
+${clientWork
+  .map((client) => `- ${client.name}: ${client.description}`)
+  .join("\n")}
 
 ## Contact
 
@@ -576,6 +657,9 @@ body {
   background: #ffffff;
   color: var(--ink);
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+.contact-modal-open {
+  overflow: hidden;
 }
 .seo-page a {
   color: var(--teal);
@@ -748,6 +832,120 @@ body {
   height: 100%;
   transform: scale(1.8);
 }
+.contact-modal[hidden] {
+  display: none;
+}
+.contact-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.contact-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: radial-gradient(circle at top, rgba(69, 191, 211, 0.18), transparent 38%),
+    linear-gradient(135deg, rgba(3, 7, 18, 0.92), rgba(15, 23, 42, 0.84));
+  backdrop-filter: blur(12px);
+  cursor: pointer;
+}
+.contact-modal__panel {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr);
+  width: min(100%, 1024px);
+  max-height: calc(100vh - 48px);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 32px;
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 28px 120px rgba(2, 8, 23, 0.45);
+  backdrop-filter: blur(20px);
+}
+.contact-modal__panel::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--teal-bright), transparent);
+}
+.contact-modal__intro {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(160deg, #f8fdff 0%, #edf8fb 46%, #e0f5f8 100%);
+  padding: 32px;
+}
+.contact-modal__intro h2 {
+  max-width: 360px;
+  font-size: 34px;
+  font-weight: 300;
+  line-height: 1.08;
+}
+.contact-modal__intro p:not(.eyebrow) {
+  max-width: 380px;
+  font-size: 15px;
+  line-height: 1.65;
+}
+.contact-modal__notes {
+  display: grid;
+  gap: 12px;
+  margin-top: 32px;
+  color: var(--muted);
+  font-size: 14px;
+}
+.contact-modal__notes div {
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.65);
+  padding: 12px 16px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+}
+.contact-modal__form {
+  position: relative;
+  background: rgba(255, 255, 255, 0.7);
+  padding: 12px;
+}
+.contact-modal__close {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  z-index: 2;
+  display: inline-flex;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #334155;
+  font-size: 28px;
+  line-height: 1;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+  cursor: pointer;
+  transition: transform 160ms ease, background 160ms ease;
+}
+.contact-modal__close:hover {
+  background: #ffffff;
+  transform: scale(1.05);
+}
+.contact-modal__frame {
+  overflow: hidden;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  border-radius: 22px;
+  background: #ffffff;
+  box-shadow: inset 0 2px 4px rgba(15, 23, 42, 0.06);
+}
+.contact-modal__frame iframe {
+  display: block;
+  width: 100%;
+  border: 0;
+}
 .seo-page .grid {
   display: grid;
   gap: 18px;
@@ -758,6 +956,57 @@ body {
 }
 .seo-page .grid.three {
   grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.seo-page .client-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 28px;
+}
+.seo-page .client-card {
+  min-height: 248px;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: linear-gradient(180deg, #ffffff 0%, var(--soft) 100%);
+  padding: 20px;
+}
+.seo-page .client-logo {
+  display: flex;
+  height: 80px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  background: #ffffff;
+  padding: 16px;
+}
+.seo-page .client-logo img {
+  display: block;
+  max-width: 100%;
+  max-height: 48px;
+  object-fit: contain;
+  filter: grayscale(1);
+  opacity: 0.78;
+}
+.seo-page .client-logo img.dark-logo {
+  filter: grayscale(1) brightness(0);
+}
+.seo-page .client-logo span {
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-align: center;
+  text-transform: uppercase;
+}
+.seo-page .client-card h3 {
+  margin-top: 20px;
+  font-size: 18px;
+}
+.seo-page .client-card p {
+  margin-bottom: 0;
+  font-size: 14px;
+  line-height: 1.6;
 }
 .seo-page .card,
 .seo-page .answer-box,
@@ -807,17 +1056,58 @@ body {
     justify-content: flex-start;
   }
   .seo-page .grid.two,
-  .seo-page .grid.three {
+  .seo-page .grid.three,
+  .seo-page .client-grid {
     grid-template-columns: 1fr;
   }
   .seo-page .hero {
     min-height: auto;
     padding-top: 56px;
   }
+  .contact-modal {
+    padding: 16px;
+  }
+  .contact-modal__panel {
+    grid-template-columns: 1fr;
+    overflow-y: auto;
+  }
+  .contact-modal__intro {
+    padding: 24px;
+  }
+  .contact-modal__intro h2 {
+    font-size: 30px;
+  }
+  .contact-modal__frame iframe {
+    height: 640px;
+  }
 }
 `;
 
-const homeSchema = commonSchema(homePage, [faqSchema(homePage, faqs)]);
+const clientWorkSchema = {
+  "@type": "ItemList",
+  "@id": `${site.url}/#selected-client-work`,
+  name: "Selected client work",
+  numberOfItems: clientWork.length,
+  itemListElement: clientWork.map((client, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    item: {
+      "@type": "CreativeWork",
+      name: `${client.name} project`,
+      description: client.description,
+      about: {
+        "@type": "Organization",
+        name: client.name,
+        ...(client.url ? { url: client.url } : {}),
+      },
+    },
+  })),
+};
+
+const homeSchema = commonSchema(homePage, [
+  faqSchema(homePage, faqs),
+  clientWorkSchema,
+]);
 
 writeRoute("/", shell(homePage, homeBody(), homeSchema, true));
 for (const service of servicePages) {
@@ -832,5 +1122,25 @@ writeFileSync(join(distDir, "sitemap.xml"), sitemap());
 writeFileSync(join(distDir, "robots.txt"), robots());
 writeFileSync(join(distDir, "llms.txt"), llmsText());
 writeFileSync(join(distDir, "llms.text"), llmsText());
+
+const hostingConfigPath = join(process.cwd(), ".openai", "hosting.json");
+const distHostingDir = join(distDir, ".openai");
+const distServerDir = join(distDir, "server");
+
+mkdirSync(distHostingDir, { recursive: true });
+mkdirSync(distServerDir, { recursive: true });
+writeFileSync(
+  join(distHostingDir, "hosting.json"),
+  readFileSync(hostingConfigPath),
+);
+writeFileSync(
+  join(distServerDir, "index.js"),
+  `export default {
+  fetch(request, env) {
+    return env.ASSETS.fetch(request);
+  },
+};
+`,
+);
 
 console.log(`Generated ${allStaticPages.length} static pages, sitemap.xml, robots.txt, llms.txt, and llms.text.`);

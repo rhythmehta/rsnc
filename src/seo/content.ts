@@ -1,3 +1,5 @@
+import { primaryCta } from "../cta";
+
 export interface LinkItem {
   label: string;
   href: string;
@@ -57,6 +59,14 @@ export interface SeoPage {
   summary: string;
 }
 
+export interface ClientWork {
+  name: string;
+  description: string;
+  logo?: string;
+  darkLogo?: boolean;
+  url?: string;
+}
+
 export interface SchemaEntity {
   "@type": string;
   "@id"?: string;
@@ -69,7 +79,7 @@ export const site = {
   url: "https://rsnc.tech",
   logoPath: "/rsnc-tech-company-logo.png",
   ogImagePath: "/og-resonance-technology.png",
-  formUrl: "https://app.youform.com/forms/r9h71i28",
+  formUrl: primaryCta.href,
   foundingDate: "2025",
   description:
     "Resonance Technology builds AI agents, workflow automation, and domain-tuned models for B2B operations teams.",
@@ -86,19 +96,16 @@ export const navLinks: LinkItem[] = [
 export const homePage: SeoPage & {
   heroEyebrow: string;
   serviceLine: string;
-  proofIntro: string;
 } = {
   path: "/",
-  title: "AI Agents and Workflow Automation for B2B Operations | Resonance Technology",
+  title: "Healthcare AI and B2B Workflow Automation | Resonance Technology",
   metaDescription:
-    "Resonance Technology builds production AI agents, workflow automation, and domain-tuned models for B2B operations teams that need measurable ROI.",
+    "Resonance Technology builds healthcare AI, EHR-integrated platforms, telehealth products, AI agents, and workflow automation for US and global teams.",
   h1: "AI agents and workflow automation for B2B operations",
   heroEyebrow: "Production AI for B2B operations",
   summary:
     "Resonance Technology helps operations, support, revenue, and knowledge teams replace repetitive manual work with reliable AI systems connected to CRM, ERP, support, and internal tools.",
   serviceLine: "AI agents • Workflow automation • Domain-tuned models",
-  proofIntro:
-    "We use anonymized workflow evidence, evaluation results, review paths, and operational metrics to prove whether an AI workflow is ready for production.",
 };
 
 export const servicePages: ServicePage[] = [
@@ -407,21 +414,94 @@ export const processSteps = [
   },
 ];
 
-export const proofPoints = [
+export const clientWork: ClientWork[] = [
   {
-    title: "Workflow evidence",
+    name: "Stealth",
     description:
-      "Each project starts with a concrete workflow map: systems touched, manual steps removed, review gates retained, and the metric being improved.",
+      "Plastic surgery AI simulation product.",
   },
   {
-    title: "Production controls",
+    name: "Centering Healthcare Institute",
     description:
-      "Agents and automations ship with evals, scoped tool access, logs, exception handling, and human approval where the work requires it.",
+      "Community platform for care providers with agentic assistance.",
+    logo: "/clients/centering-healthcare-institute.png",
+    url: "https://centeringhealthcare.org/",
   },
   {
-    title: "Anonymized outcomes",
+    name: "Wendi",
     description:
-      "When client names cannot be published, proof is shown through before-and-after workflow structure, metric categories, and implementation constraints.",
+      "AI clinic virtual assistant integrated with multiple EHR systems.",
+    logo: "/clients/wendi.png",
+    url: "https://www.getwendi.com/",
+  },
+  {
+    name: "LEARN Behavioral",
+    description:
+      "Patient intake platform supporting ABA therapy operations.",
+    logo: "/clients/learn-behavioral.svg",
+    url: "https://learnbehavioral.com/",
+  },
+  {
+    name: "Fertility Answers",
+    description:
+      "AI fertility product built with IBM Watson.",
+    logo: "/clients/fertility-answers.png",
+    url: "https://fertility.medanswers.com/",
+  },
+  {
+    name: "Colliga Apps",
+    description:
+      "Academic research, clinical trials, digital participation, and course platform.",
+    logo: "/clients/colliga-apps.png",
+    url: "https://colliga.io/",
+  },
+  {
+    name: "TadHealth",
+    description:
+      "Insurance claims and billing module for school-based healthcare.",
+    logo: "/clients/tadhealth.png",
+    url: "https://www.tadhealth.com/",
+  },
+  {
+    name: "TelMD",
+    description:
+      "Two-sided B2C telehealth platform for patients and providers.",
+    logo: "/clients/telmd.png",
+    url: "https://telmd.com/",
+  },
+  {
+    name: "HomeMeds",
+    description:
+      "Preventive care and healthcare automation product.",
+    logo: "/clients/homemeds.jpg",
+    url: "https://www.homemeds.org/",
+  },
+  {
+    name: "SOFLETE",
+    description:
+      "Machine learning and smart wearable-integrated fitness app.",
+    logo: "/clients/soflete.png",
+    darkLogo: true,
+    url: "https://soflete.com/",
+  },
+  {
+    name: "Official Black Wall Street",
+    description:
+      "Marketplace for Black-owned businesses.",
+    logo: "/clients/official-black-wall-street.png",
+    url: "https://officialblackwallstreet.com/",
+  },
+  {
+    name: "Argot",
+    description:
+      "Intelligent social networking platform with automatic connections.",
+  },
+  {
+    name: "Los Angeles County DCFS",
+    description:
+      "Digital product work for the Department of Children and Family Services.",
+    logo: "/clients/la-county-dcfs.png",
+    url: "https://dcfs.lacounty.gov/",
   },
 ];
 

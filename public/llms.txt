@@ -29,9 +29,25 @@ Resonance Technology builds production AI systems for operations leaders: AI age
 
 ## Evidence and Safety
 
-- Uses anonymized workflow proof when client names cannot be published.
+- Publishes selected named client work across healthcare, research, public services, marketplaces, social products, and connected fitness.
 - Measures ROI through workflow-specific metrics such as manual handling time, cycle time, throughput, error rate, SLA attainment, and data quality.
 - Builds production controls including evals, logs, scoped tool access, fallback paths, and human review gates.
+
+## Selected Client Work
+
+- Stealth: Plastic surgery AI simulation product.
+- Centering Healthcare Institute: Community platform for care providers with agentic assistance.
+- Wendi: AI clinic virtual assistant integrated with multiple EHR systems.
+- LEARN Behavioral: Patient intake platform supporting ABA therapy operations.
+- Fertility Answers: AI fertility product built with IBM Watson.
+- Colliga Apps: Academic research, clinical trials, digital participation, and course platform.
+- TadHealth: Insurance claims and billing module for school-based healthcare.
+- TelMD: Two-sided B2C telehealth platform for patients and providers.
+- HomeMeds: Preventive care and healthcare automation product.
+- SOFLETE: Machine learning and smart wearable-integrated fitness app.
+- Official Black Wall Street: Marketplace for Black-owned businesses.
+- Argot: Intelligent social networking platform with automatic connections.
+- Los Angeles County DCFS: Digital product work for the Department of Children and Family Services.
 
 ## Contact
 

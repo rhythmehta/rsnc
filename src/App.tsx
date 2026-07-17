@@ -3,11 +3,11 @@ import { ChevronDown, X } from "lucide-react";
 import CompanyBrainFlow from "./components/CompanyBrainFlow";
 import Hero from "./components/Hero";
 import {
+  clientWork,
   faqs,
   homePage,
   navLinks,
   processSteps,
-  proofPoints,
   servicePages,
   useCasePages,
 } from "./seo/content";
@@ -24,7 +24,6 @@ function App() {
         description={homePage.summary}
         serviceLine={homePage.serviceLine}
         navLinks={navLinks}
-        ctaHref="/contact/"
         ctaSupport="Built for CRM, ERP, support, revenue, and internal operations workflows that need measurable ROI."
         onCtaClick={() => setIsContactOpen(true)}
       />
@@ -81,27 +80,46 @@ function App() {
 
       <CompanyBrainFlow />
 
-      <section className="relative z-10 bg-white">
+      <section className="relative z-10 overflow-hidden bg-white" aria-labelledby="client-work-title">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-56 bg-[radial-gradient(circle_at_50%_0%,rgba(69,191,211,0.12),transparent_68%)]" />
         <div className="mx-auto max-w-6xl px-6 py-16 md:px-10 md:py-20">
-          <div className="max-w-3xl">
+          <div className="relative max-w-3xl">
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#0f6d7b]">
-              Anonymized Proof
+              Selected Client Work
             </p>
-            <h2 className="mt-4 text-3xl font-light tracking-tight text-slate-950 md:text-4xl">
-              Evidence without unsupported claims
+            <h2 id="client-work-title" className="mt-4 text-3xl font-light tracking-tight text-slate-950 md:text-4xl">
+              Products built with ambitious teams
             </h2>
             <p className="mt-5 text-sm leading-relaxed text-slate-700 md:text-base">
-              {homePage.proofIntro}
+              Experience across healthcare AI, EHR integrations, telehealth, clinical
+              operations, academic research, public services, marketplaces, and
+              connected fitness.
             </p>
           </div>
-          <div className="mt-10 grid gap-4 md:grid-cols-3">
-            {proofPoints.map((proof) => (
+          <div className="relative mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {clientWork.map((client) => (
               <article
-                key={proof.title}
-                className="rounded-[1.6rem] border border-slate-200/80 bg-[linear-gradient(180deg,#ffffff_0%,#f7fbfc_100%)] p-6 shadow-[0_18px_50px_rgba(15,23,42,0.05)]"
+                key={client.name}
+                className="group flex min-h-[15.5rem] flex-col rounded-[1.6rem] border border-slate-200/80 bg-[linear-gradient(180deg,#ffffff_0%,#f7fbfc_100%)] p-5 shadow-[0_18px_50px_rgba(15,23,42,0.05)] transition duration-300 hover:-translate-y-1 hover:border-[#45BFD3]/35 hover:shadow-[0_24px_60px_rgba(15,23,42,0.09)]"
               >
-                <h3 className="text-xl font-medium tracking-tight text-slate-950">{proof.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-slate-700">{proof.description}</p>
+                <div className="flex h-20 items-center justify-center rounded-[1.15rem] border border-slate-200/70 bg-white px-4">
+                  {client.logo ? (
+                    <img
+                      src={client.logo}
+                      alt={`${client.name} logo`}
+                      loading="lazy"
+                      className={`max-h-12 max-w-full object-contain grayscale opacity-75 transition duration-300 group-hover:grayscale-0 group-hover:opacity-100 ${
+                        client.darkLogo ? "brightness-0" : ""
+                      }`}
+                    />
+                  ) : (
+                    <span className="text-center text-sm font-semibold uppercase tracking-[0.18em] text-slate-500 transition group-hover:text-[#0f6d7b]">
+                      {client.name}
+                    </span>
+                  )}
+                </div>
+                <h3 className="mt-5 text-lg font-medium tracking-tight text-slate-950">{client.name}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-slate-600">{client.description}</p>
               </article>
             ))}
           </div>
