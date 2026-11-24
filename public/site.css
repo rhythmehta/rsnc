@@ -433,6 +433,12 @@ nav a:hover { text-decoration: underline; }
 }
 .contact-page { min-height: 44vh; }
 .contact-note { margin-top: 1rem; font-size: .9375rem; }
+.workflow-prose { max-width: 68ch; }
+.workflow-prose :is(ul, ol) { margin-block: .9rem; padding-inline-start: 1.4rem; }
+.workflow-prose li + li,
+.workflow-prose p + p { margin-top: .65rem; }
+.workflow-prose > ul + p { margin-top: .9rem; }
+.workflow-prose a { text-decoration: underline; }
 
 @media (max-width: 63.99rem) {
   .client-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }

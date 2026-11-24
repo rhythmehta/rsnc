@@ -10,12 +10,16 @@ import {
   homePage,
   heroWorkers,
   homeWorkers,
+  intakePath,
+  intakeResources,
+  intakeSteps,
   navLinks,
   processSteps,
   servicePages,
   site,
   useCasePages,
   type FaqItem,
+  type IntakeResource,
   type SeoPage,
   type ServicePage,
   type UseCasePage,
@@ -42,8 +46,8 @@ function list(items: string[]) {
   return `<ul>${items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`;
 }
 
-function primaryCta() {
-  return `<a class="primary-cta" href="${primaryCtaConfig.href}">${primaryCtaConfig.text}<span aria-hidden="true">↗</span></a>`;
+function primaryCta(text: string = primaryCtaConfig.text) {
+  return `<a class="primary-cta" href="${primaryCtaConfig.href}">${escapeHtml(text)}<span aria-hidden="true">↗</span></a>`;
 }
 
 function workerIcon(name: string) {
@@ -236,13 +240,13 @@ function pageFooter() {
   </footer>`;
 }
 
-function ctaBlock() {
+function ctaBlock(text?: string) {
   return `<section class="cta-band" aria-labelledby="cta-title">
     <div>
       <h2 id="cta-title">Start with one AI worker.</h2>
       <p>Tell us what you want handled. We’ll scope a custom build.</p>
     </div>
-    ${primaryCta()}
+    ${primaryCta(text)}
   </section>`;
 }
 
@@ -362,6 +366,8 @@ function renderWorkers() {
       </li>`).join("")}
     </ul>
 
+    ${intakeLinks()}
+
     <div class="service-links" id="services" aria-labelledby="services-title">
       <h3 id="services-title">Services</h3>
       ${servicePages.map((service) => `<a href="${service.path}">${escapeHtml(service.shortTitle)}</a>`).join("")}
@@ -457,6 +463,7 @@ function renderServicePage(service: ServicePage) {
       <div class="service-links" aria-label="More workflow examples">
         ${additionalWorkflows.map((page) => `<a href="${page.path}">${escapeHtml(page.shortTitle)}</a>`).join("")}
       </div>
+      ${service.slug === "workflow-automation" ? intakeLinks() : ""}
     </section>
 
     <section aria-labelledby="service-faq-title">
@@ -471,17 +478,25 @@ function renderServicePage(service: ServicePage) {
 }
 
 function renderUseCasePage(useCase: UseCasePage) {
+  const isIntake = useCase.path === intakePath;
   const schema = commonSchema(useCase);
   const body = `<main id="main" class="site-wrap seo-page">
     <section class="hero compact">
       <p class="eyebrow">${escapeHtml(useCase.eyebrow)}</p>
       <h1>${escapeHtml(useCase.h1)}</h1>
       <p class="summary">${escapeHtml(useCase.summary)}</p>
-      <div class="answer-box"><strong>Direct answer:</strong> ${escapeHtml(useCase.directAnswer)}</div>
+      <p class="answer-box">${escapeHtml(useCase.directAnswer)}</p>
       <div class="actions">
-        ${primaryCta()}
+        ${primaryCta(isIntake ? "Share one recurring task" : undefined)}
       </div>
     </section>
+
+    ${isIntake ? `<section class="workflow-prose" aria-labelledby="intake-steps-title">
+      <h2 id="intake-steps-title">How a request moves from inbox to approval</h2>
+      <ol>${intakeSteps.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}</ol>
+      <p>The <a href="/#company-brain">Company Brain</a> supplies the current intake policy, approval rules, and access to the tools the worker needs. The operations team owns exceptions and approves changes that require staff sign-off.</p>
+      ${intakeLinks(useCase.path)}
+    </section>` : ""}
 
     <section aria-labelledby="buyer-title">
       <h2 id="buyer-title">Buyer fit</h2>
@@ -497,10 +512,49 @@ function renderUseCasePage(useCase: UseCasePage) {
       </div>
     </section>
 
-    ${ctaBlock()}
+    ${ctaBlock(isIntake ? "Share one recurring task" : undefined)}
   </main>`;
 
   return shell(useCase, body, schema);
+}
+
+function intakeLinks(currentPath?: string) {
+  const links = [
+    { path: intakePath, shortTitle: "Explore AI request intake and approvals" },
+    ...intakeResources,
+  ];
+  return `<nav class="service-links" aria-label="Request intake resources">
+    ${links.filter((link) => link.path !== currentPath)
+      .map((link) => `<a href="${escapeHtml(link.path)}">${escapeHtml(link.shortTitle)}</a>`)
+      .join("")}
+  </nav>`;
+}
+
+function renderIntakeResource(page: IntakeResource) {
+  const url = absoluteUrl(page.path);
+  const schema = commonSchema(page, [{
+    "@type": "Article",
+    "@id": `${url}#article`,
+    headline: page.h1,
+    description: page.metaDescription,
+    mainEntityOfPage: { "@id": `${url}#webpage` },
+    author: { "@id": `${site.url}/#organization` },
+    inLanguage: "en",
+  }]);
+  return shell(page, `<main id="main" class="site-wrap seo-page">
+    <section class="hero compact">
+      <p class="eyebrow">${escapeHtml(page.label)}</p>
+      <h1>${escapeHtml(page.h1)}</h1>
+      <p class="summary">${escapeHtml(page.summary)}</p>
+    </section>
+    ${page.sections.map(({ heading, paragraphs = [], checklist }) => `<section class="workflow-prose">
+      <h2>${escapeHtml(heading)}</h2>
+      ${checklist ? list(checklist) : ""}
+      ${paragraphs.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("")}
+    </section>`).join("")}
+    ${intakeLinks(page.path)}
+    ${ctaBlock("Share one recurring task")}
+  </main>`, schema);
 }
 
 function renderFaqPage() {
@@ -597,6 +651,10 @@ ${useCasePages
   .map((useCase) => `- ${useCase.shortTitle}: ${useCase.summary} (${absoluteUrl(useCase.path)})`)
   .join("\n")}
 
+## Request Intake Resources
+
+${intakeResources.map((page) => `- ${page.title}: ${absoluteUrl(page.path)}`).join("\n")}
+
 ## Evidence and Safety
 
 - Publishes selected named client work across healthcare, research, public services, marketplaces, social products, and connected fitness.
@@ -666,6 +724,7 @@ export function writeSite(root: string): string[] {
     ["index.html", shell(homePage, homeBody(), homeSchema)],
     ...servicePages.map((page): [string, string] => [`${page.path.slice(1)}index.html`, renderServicePage(page)]),
     ...useCasePages.map((page): [string, string] => [`${page.path.slice(1)}index.html`, renderUseCasePage(page)]),
+    ...intakeResources.map((page): [string, string] => [`${page.path.slice(1)}index.html`, renderIntakeResource(page)]),
     [`${faqPage.path.slice(1)}index.html`, renderFaqPage()],
     [`${contactPage.path.slice(1)}index.html`, renderContactPage()],
     ["404.html", notFound],

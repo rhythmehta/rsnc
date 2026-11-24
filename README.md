@@ -15,4 +15,4 @@ npm run preview
 
 **Hire AI Workers** opens the custom project inquiry at `/contact/`, which links to the hosted Youform project brief. Set `RSNC_CONTACT_EMAIL` to the verified public intake address to enable the email fallback. Use a GitHub Actions repository variable of the same name for deployment builds.
 
-Before publishing, confirm that the fallback mailbox is monitored and that an approved test submission shows a receipt and reaches the intake owner. Keep the previous passing Pages deployment available for rollback. The [refresh plan](docs/website-refresh-plan.md) defines the usability, discovery, and performance checks.
+Before publishing, verify that submissions reach the intake owner. If an email fallback is configured, verify that the public mailbox is monitored. Keep the previous passing Pages deployment available for rollback. The [refresh plan](docs/website-refresh-plan.md) defines the usability, discovery, and performance checks.

@@ -57,6 +57,18 @@ export interface SeoPage {
   summary: string;
 }
 
+interface ResourceSection {
+  heading: string;
+  paragraphs?: string[];
+  checklist?: string[];
+}
+
+export interface IntakeResource extends SeoPage {
+  shortTitle: string;
+  label: string;
+  sections: ResourceSection[];
+}
+
 interface HomeWorker {
   title: string;
   description: string;
@@ -103,32 +115,34 @@ export const navLinks: LinkItem[] = [
   { label: "Services", href: "/#services" },
 ];
 
+export const intakePath = "/use-cases/operations-ai/";
+
 export const homePage: SeoPage = {
   path: "/",
   title: "Custom AI Workers and Company Brain | Resonance Technology",
   metaDescription: site.description,
   h1: "Automate the work round the clock.",
   summary:
-    "AI workers with your Company Brain ready to start next week.",
+    "We build specialized AI workers for your business and a Company Brain that gives them the knowledge, rules, and tools they need.",
 };
 
 export const heroWorkers: readonly HeroWorker[] = [
-  { title: "Operations coordinator", description: "Route requests and flag exceptions", outcomes: ["Could return 2–4 hrs/week", "Could route work 20–35% faster", "Keep critical work moving after hours"], icon: "list-checks" },
-  { title: "Customer support agent", description: "Triage incoming tickets", outcomes: ["Study: 14% more issues resolved/hour¹", "5–6 min less on rare issues¹", "Free experts for high stakes cases"], icon: "inbox" },
-  { title: "Inbound sales rep", description: "Qualify and route new leads", outcomes: ["First response in minutes", "Cover 10–20% more leads", "Turn more demand into pipeline"], icon: "messages-square" },
-  { title: "Outbound sales rep", description: "Research accounts and draft follow-ups", outcomes: ["Save 1–3 hrs/week on research", "Could add 10–20% selling time", "Grow account reach without more reps"], icon: "send" },
-  { title: "Finance analyst", description: "Prepare reports for close", outcomes: ["Save 2–5 hrs each close", "Could cut report prep 20–30%", "Give leaders numbers sooner"], icon: "credit-card" },
-  { title: "Accounts payable clerk", description: "Match invoices to orders", outcomes: ["Cut manual matching by 30–50%", "Clear clean invoices hours sooner", "Protect cash and avoid late fees"], icon: "file-text" },
-  { title: "HR coordinator", description: "Route employee requests", outcomes: ["Save 1–3 hrs/week on admin", "Routine answers the same day", "Scale support without growing the queue"], icon: "users" },
-  { title: "Recruiting coordinator", description: "Schedule interviews and prep briefs", outcomes: ["Schedule 1–2 days sooner", "Save 2–4 hrs/week coordinating", "Keep top candidates moving"], icon: "users" },
-  { title: "IT help desk analyst", description: "Handle access and setup requests", outcomes: ["Resolve routine asks in minutes", "Cut queue handling by 20–40%", "Support more staff without more tickets"], icon: "shield-check" },
-  { title: "Procurement coordinator", description: "Check vendor requests against policy", outcomes: ["Review requests 1–2 days sooner", "Cut incomplete submissions 20–35%", "Protect savings while buying moves faster"], icon: "clipboard-check" },
-  { title: "Customer success manager", description: "Surface account risks and next steps", outcomes: ["See account risk hours earlier", "Save 2–4 hrs/week on account prep", "Act sooner to protect renewals"], icon: "message-square-text" },
-  { title: "Marketing coordinator", description: "Adapt campaign content for review", outcomes: ["Save 2–4 hrs per campaign", "Draft 30–50% faster", "Ship more campaigns with the same team"], icon: "book-open" },
-  { title: "Social media manager", description: "Draft posts for approval", outcomes: ["Create 2–3× more draft options", "Save 1–2 hrs/week repurposing", "Keep every channel consistently active"], icon: "message-square-text" },
-  { title: "Compliance analyst", description: "Gather evidence and flag exceptions", outcomes: ["Spend hours less chasing evidence", "Prep evidence 20–40% faster", "Reduce audit scramble and exposure"], icon: "shield-check" },
-  { title: "Data analyst", description: "Summarize recurring reports", outcomes: ["Save 1–3 hrs/week on reports", "Routine answers the same day", "Spend more time on decisions"], icon: "list-checks" },
-  { title: "Knowledge specialist", description: "Find policy answers with sources", outcomes: ["Get sourced answers in minutes", "Cut repeat expert queries 20–40%", "Keep teams moving as you scale"], icon: "book-open" },
+  { title: "Operations coordinator", description: "Route requests and flag exceptions", outcomes: ["Check for missing details", "Prepare approvals for the right owner", "Measure time from request to assignment"], icon: "list-checks" },
+  { title: "Customer support agent", description: "Triage incoming tickets", outcomes: ["Group tickets by issue", "Draft replies from approved material", "Measure first response time"], icon: "inbox" },
+  { title: "Inbound sales rep", description: "Qualify and route new leads", outcomes: ["Check for matching accounts", "Route by territory or product", "Measure time to first follow-up"], icon: "messages-square" },
+  { title: "Outbound sales rep", description: "Research accounts and draft follow-ups", outcomes: ["Summarize account context", "Prepare drafts for review", "Measure research time per account"], icon: "send" },
+  { title: "Finance analyst", description: "Prepare reports for close", outcomes: ["Gather figures from approved sources", "Flag gaps for review", "Measure report preparation time"], icon: "credit-card" },
+  { title: "Accounts payable clerk", description: "Match invoices to orders", outcomes: ["Find matching purchase orders", "Route discrepancies to staff", "Measure manual touches per invoice"], icon: "file-text" },
+  { title: "HR coordinator", description: "Route employee requests", outcomes: ["Find the relevant policy", "Send sensitive cases to staff", "Measure time to assignment"], icon: "users" },
+  { title: "Recruiting coordinator", description: "Schedule interviews and prep briefs", outcomes: ["Gather panel availability", "Prepare interview packets", "Measure time to schedule"], icon: "users" },
+  { title: "IT help desk analyst", description: "Handle access and setup requests", outcomes: ["Check the request against policy", "Send access changes for approval", "Measure queue handling time"], icon: "shield-check" },
+  { title: "Procurement coordinator", description: "Check vendor requests against policy", outcomes: ["Check for required documents", "Route exceptions to buyers", "Measure approval cycle time"], icon: "clipboard-check" },
+  { title: "Customer success manager", description: "Surface account risks and next steps", outcomes: ["Gather account history", "Prepare a follow-up for review", "Measure account preparation time"], icon: "message-square-text" },
+  { title: "Marketing coordinator", description: "Adapt campaign content for review", outcomes: ["Apply brand and channel guidelines", "Draft variants from one brief", "Measure time to a usable draft"], icon: "book-open" },
+  { title: "Social media manager", description: "Draft posts for approval", outcomes: ["Adapt material for each channel", "Queue drafts for approval", "Measure review and revision time"], icon: "message-square-text" },
+  { title: "Compliance analyst", description: "Gather evidence and flag exceptions", outcomes: ["Link evidence to the relevant policy", "Prepare exceptions for human review", "Measure time to prepare evidence"], icon: "shield-check" },
+  { title: "Data analyst", description: "Summarize recurring reports", outcomes: ["Find changes in approved reports", "Link findings to their source", "Measure recurring report effort"], icon: "list-checks" },
+  { title: "Knowledge specialist", description: "Find policy answers with sources", outcomes: ["Cite the approved source", "Route questions when evidence is missing", "Measure time to a sourced answer"], icon: "book-open" },
 ];
 
 export const homeWorkers: readonly HomeWorker[] = [
@@ -147,13 +161,13 @@ export const homeWorkers: readonly HomeWorker[] = [
   {
     title: "Request intake",
     description: "Extracts key details and prepares a task for review.",
-    path: "/use-cases/operations-ai/",
+    path: intakePath,
     icon: "file-input",
   },
   {
     title: "Approval prep",
     description: "Assembles records and documents for a human decision.",
-    path: "/use-cases/operations-ai/",
+    path: intakePath,
     icon: "clipboard-check",
   },
   {
@@ -384,18 +398,18 @@ export const useCasePages: UseCasePage[] = [
   {
     kind: "use-case",
     slug: "operations-ai",
-    path: "/use-cases/operations-ai/",
+    path: intakePath,
     shortTitle: "Operations",
-    title: "Operations AI Workflow Automation | Resonance Technology",
+    title: "AI Request Intake and Approval Routing | Resonance Technology",
     metaDescription:
-      "AI workflow automation for operations teams handling approvals, intake, routing, system updates, and cross-functional handoffs.",
-    h1: "Operations AI workflow automation",
+      "Build a custom AI worker to read shared inbox requests, catch duplicates, prepare approvals, and update your CRM or ERP.",
+    h1: "AI request intake and approval routing",
     eyebrow: "Use Case",
     summary:
-      "Automation for multi-step operations work that depends on documents, approvals, queues, and system updates.",
+      "Give recurring requests a clear path from a shared inbox to the right reviewer and business system.",
     directAnswer:
-      "Resonance builds AI workflows that help operations teams gather evidence, prepare decisions, route work, and update systems with audit-ready controls.",
-    buyer: "COOs, operations leads, and teams responsible for process throughput and service levels.",
+      "Resonance builds custom AI workers that read incoming requests, check required details, and route each case under your approval rules. They can prepare a CRM or ERP update and apply it once the workflow allows it.",
+    buyer: "This works best for an operations team with a recurring queue, an owner for exceptions, access to the systems involved, and a bottleneck you can measure.",
     workflows: ["Request intake", "Approval preparation", "Exception routing", "Status updates", "Audit trail generation"],
     systems: ["ERP", "CRM", "databases", "document stores", "Slack", "email", "internal tools"],
     metrics: ["cycle time", "manual touches", "backlog", "SLA attainment", "rework rate"],
@@ -652,10 +666,94 @@ export const faqPage: SeoPage = {
     "Direct answers for B2B operations leaders evaluating AI agents, workflow automation, and domain-tuned models for live business processes.",
 };
 
+export const intakeSteps = [
+  "Read a request from the shared inbox and extract its account, request type, and reference number.",
+  "Ask for missing information and check the CRM for an existing case before proposing a new record.",
+  "Show the operations reviewer the source message, proposed change, and the rule that requires approval.",
+  "After approval, update the CRM or ERP. Confirm the result and send failed or uncertain writes to the queue owner.",
+];
+
+export const intakeResources: IntakeResource[] = [
+  {
+    path: "/resources/shared-inbox-to-crm-workflow/",
+    shortTitle: "See a shared inbox to CRM workflow",
+    title: "Shared Inbox to CRM Workflow Example | Resonance Technology",
+    metaDescription: "See an example of request intake with duplicate checks, staff approval, and confirmed CRM writes.",
+    h1: "From shared inbox to an approved CRM update",
+    summary: "Match each request to an existing case before proposing a new record. Let a reviewer resolve uncertain matches or approval decisions before the worker writes to the CRM.",
+    label: "Illustrative workflow",
+    sections: [
+      {
+        heading: "What comes in",
+        paragraphs: [
+          "A customer emails a shared operations inbox: “Please update the delivery contact for order A-2041 to the receiving desk.” The worker records the order reference, the requested change, and a link to the original message. The inbox and CRM contain sample data in this example.",
+          "A follow-up arrives in a different thread. The worker checks the order reference and open cases for the same request type. If it finds a matching case, it attaches the new message to the review draft instead of proposing a second case. If multiple cases match, it asks the queue owner to decide.",
+        ],
+      },
+      {
+        heading: "What the reviewer sees",
+        paragraphs: [
+          "The review draft shows the existing contact, the requested value, the order reference, and the source message. The Company Brain supplies the approved instruction for who can authorize this change. If the order reference or requester authority is missing, the worker prepares a follow-up and leaves the CRM untouched.",
+          "The operations reviewer can approve the exact fields, reject the request, or ask for more information. If the source record changes before the approved write, the worker sends the draft back for review.",
+        ],
+      },
+      {
+        heading: "What gets written",
+        paragraphs: [
+          "An approved request updates the delivery contact on the matched CRM record and logs the case reference, reviewer, and outcome. If the CRM times out, the worker checks the record for the intended change before trying again. An ambiguous result goes to the queue owner with the request and write details.",
+          "Measure manual minutes per request, duplicate cases, and time waiting for review before and during a pilot. Track exception volume alongside the time saved.",
+        ],
+      },
+    ],
+  },
+  {
+    path: "/resources/request-intake-automation-checklist/",
+    shortTitle: "Use the request intake checklist",
+    title: "Request Intake Automation Checklist | Resonance Technology",
+    metaDescription: "Choose rules, AI, and human review for request intake. Use the worksheet to scope one workflow and measure a pilot.",
+    h1: "Rules, AI, or human review?",
+    summary: "Use rules for known conditions, AI to interpret messages and documents, and human review for ambiguous cases or consequential changes. Scope one request type before expanding.",
+    label: "Request intake automation checklist",
+    sections: [
+      {
+        heading: "Decide who handles each step",
+        checklist: [
+          "Rules: check required fields, look up exact identifiers, route by known policy, and block writes without approval.",
+          "AI: extract details from unstructured messages, propose a category, and prepare a short draft with links to the source.",
+          "Staff: resolve ambiguous matches, approve sensitive changes, and own the queue for failed or uncertain writes.",
+        ],
+        paragraphs: [
+          "Use a built-in workflow or intake tool if inputs and routing already follow a fixed pattern in one system. Consider a custom worker when people must interpret varied inputs, consult company rules, and hand off work across several tools.",
+        ],
+      },
+      {
+        heading: "Copy this worksheet for one request type",
+        checklist: [
+          "Request type and queue owner: ____",
+          "Where requests arrive and average requests per week: ____",
+          "Typical active staff minutes per request and time spent waiting for approval: ____",
+          "Required fields, one typical example, and two common exceptions: ____",
+          "Systems to read, fields the worker may write, and permissions needed: ____",
+          "Who approves a write, who owns failures, and how staff take over: ____",
+          "Pilot sample, review date, and success threshold: ____",
+        ],
+      },
+      {
+        heading: "Compare the pilot with today’s queue",
+        paragraphs: [
+          "For comparable requests, subtract pilot handling minutes from baseline handling minutes per request. Multiply by the number of requests handled to estimate staff time recovered. Include time spent on review, corrections, and exceptions in pilot handling time. Compare duplicate and error counts before deciding whether to expand.",
+          "Check the cost of setup and ongoing operation separately. Agree on the success threshold and how to pause the worker before it starts updating live records.",
+        ],
+      },
+    ],
+  },
+];
+
 export const allStaticPages = [
   homePage,
   ...servicePages,
   ...useCasePages,
+  ...intakeResources,
   faqPage,
   contactPage,
 ];
