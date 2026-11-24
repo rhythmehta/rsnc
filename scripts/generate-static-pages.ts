@@ -278,18 +278,11 @@ const additionalWorkflows = useCasePages.filter((page) =>
 function renderHeroMosaic() {
   return `<div class="hero-mosaic">
     <ul class="hero-worker-grid" aria-label="Business roles a specialized AI worker can handle" role="list">
-      ${heroWorkers.map(({ title, description, outcomes, icon }) => `<li class="hero-worker">
-        <details class="hero-worker-details">
-          <summary>
-            ${workerIcon(icon)}
-            <span><strong>${escapeHtml(title)}</strong><small>${escapeHtml(description)}</small></span>
-          </summary>
-          <div class="hero-worker-outcomes">
-            <span class="hero-worker-outcomes-label">Outcomes to measure</span>
-            <strong>${escapeHtml(title)}</strong>
-            <ul>${outcomes.map((outcome) => `<li>${escapeHtml(outcome)}</li>`).join("")}</ul>
-          </div>
-        </details>
+      ${heroWorkers.map(({ title, description, outcomes, icon }) => `<li class="hero-worker" tabindex="0">
+        ${workerIcon(icon)}
+        <div class="hero-worker-copy"><strong>${escapeHtml(title)}</strong><small class="hero-worker-description">${escapeHtml(description)}</small>
+          <div class="hero-worker-outcomes"><small>Illustrative potential</small><ul>${outcomes.map((outcome) => `<li>${escapeHtml(outcome)}</li>`).join("")}</ul></div>
+        </div>
       </li>`).join("")}
     </ul>
   </div>`;
