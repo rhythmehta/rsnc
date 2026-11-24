@@ -268,6 +268,7 @@ const brainOutcomes = [
   { label: "Sales", icon: "send" },
   { label: "Finance", icon: "credit-card" },
   { label: "People", icon: "users" },
+  { label: "IT", icon: "shield-check" },
 ];
 
 const additionalWorkflows = useCasePages.filter((page) =>
@@ -288,7 +289,7 @@ function renderHeroMosaic() {
 function renderClients() {
   return `<section class="clients-section" id="clients" aria-labelledby="client-work-title">
     <div class="site-wrap">
-      <h2 id="client-work-title">Clients &amp; Projects</h2>
+      <h2 id="client-work-title">Clients</h2>
       <ul class="client-grid" role="list">
         ${roster.map((client) => `<li class="client-entry">
           ${client.logo ? `<div class="client-mark${client.darkLogo ? " client-mark-inverse" : ""}"><img src="${client.logo}" alt="" width="128" height="48" loading="lazy" decoding="async" /></div>` : ""}
@@ -302,7 +303,7 @@ function renderClients() {
 
 function renderCompanyBrain() {
   return `<section class="site-wrap company-brain" id="company-brain" aria-labelledby="brain-title">
-    <h2 id="brain-title">How your workers learn your business</h2>
+    <h2 id="brain-title">How your AI workers learn your business</h2>
     <p class="brain-intro">Your systems hold the records. Your team knows how to handle exceptions. We build a Company Brain that brings both together.</p>
 
     <div class="brain-flow">

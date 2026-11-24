@@ -108,7 +108,7 @@ export const homePage: SeoPage = {
   metaDescription: site.description,
   h1: "Automate the work round the clock.",
   summary:
-    "AI workers for the roles you’d otherwise hire, grounded in your company’s knowledge, rules, and tools.",
+    "AI workers with your Company Brain ready to start next week.",
 };
 
 export const heroWorkers: readonly HeroWorker[] = [
