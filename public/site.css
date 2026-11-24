@@ -69,10 +69,11 @@ nav a:hover { text-decoration: underline; }
   align-items: center;
   min-height: clamp(39rem, 83svh, 47rem);
   padding-block: clamp(3rem, 8vw, 7rem);
+  padding-inline: max(var(--gutter), calc((100% - var(--content-width)) / 2));
 }
 .hero-copy {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   grid-column: 1;
   isolation: isolate;
 }
@@ -82,10 +83,10 @@ nav a:hover { text-decoration: underline; }
   z-index: -1;
   inset-block: -1.25rem;
   inset-inline: calc(var(--gutter) * -1) -4rem;
-  background: linear-gradient(90deg, var(--paper) 0%, rgb(250 250 246 / 97%) 67%, rgb(250 250 246 / 84%) 86%, transparent 100%);
+  background: rgb(250 250 246 / 96%);
   -webkit-backdrop-filter: blur(12px) saturate(.72);
   backdrop-filter: blur(12px) saturate(.72);
-  mask-image: linear-gradient(90deg, #000 0%, #000 71%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent, #000 var(--gutter), #000 calc(100% - 4rem), transparent);
   pointer-events: none;
 }
 .hero-copy h1 { max-width: 18ch; text-wrap: initial; }
@@ -111,10 +112,7 @@ nav a:hover { text-decoration: underline; }
 
 .hero-mosaic {
   position: absolute;
-  z-index: 0;
-  inset-block: 0;
-  inset-inline: calc(50% - 50vw);
-  isolation: isolate;
+  inset: 0;
   background:
     radial-gradient(ellipse at 86% 24%, rgb(207 233 231 / 78%) 0%, transparent 52%),
     linear-gradient(110deg, rgb(230 243 242 / 14%), rgb(230 243 242 / 38%));
@@ -143,14 +141,10 @@ nav a:hover { text-decoration: underline; }
 .hero-worker-grid {
   --worker-columns: 5;
   list-style: none;
-  padding: clamp(.75rem, 1.4vw, 1.25rem);
+  padding: clamp(.75rem, 1.4vw, 1.75rem);
   margin: 0;
   position: absolute;
-  z-index: 1;
-  inset-block: 0;
-  inset-inline: 0;
-  width: min(var(--content-width), calc(100% - 2 * var(--gutter)));
-  margin-inline: auto;
+  inset: 0;
   display: grid;
   grid-template-columns: repeat(var(--worker-columns), minmax(0, 1fr));
   grid-auto-rows: minmax(0, 1fr);
@@ -171,8 +165,8 @@ nav a:hover { text-decoration: underline; }
   border-radius: .625rem;
   background: rgb(255 255 255 / 82%);
 }
-.hero-worker:nth-child(5n + 4), .hero-worker:nth-child(5n + 5) { background: rgb(255 255 255 / 90%); }
-.hero-worker:hover, .hero-worker:focus-visible { z-index: 4; }
+.hero-worker:hover { z-index: 1; }
+.hero-worker:focus-visible { z-index: 4; background: var(--white); }
 .hero-worker .worker-icon { width: 1.25rem; height: 1.25rem; margin-block-start: .05rem; }
 .hero-worker strong, .hero-worker small { display: block; }
 .hero-worker-copy { min-width: 0; }
@@ -497,15 +491,28 @@ nav a:hover { text-decoration: underline; }
     --signal-path: shape(from 0% 0%, vline to 50%, hline to 100%, vline to 100%);
   }
 }
-@media (max-width: 63.99rem) {
+@media (width < 64rem) {
   .home-hero {
-    display: block;
+    grid-template-columns: minmax(0, 1fr);
     min-height: max(43rem, 82svh);
     padding-block: clamp(3.5rem, 9vw, 6rem);
   }
   .hero-copy { width: min(100%, 33rem); }
-  .hero-copy::before { inset-inline-end: -5rem; }
   .hero-worker-grid { --worker-columns: 4; }
+}
+/* Keep four complete rows across viewport sizes. The first roles are the mobile shortlist. */
+@media (width >= 90rem) {
+  .hero-worker-grid { --worker-columns: 7; }
+}
+@media (76rem <= width < 90rem) {
+  .hero-worker-grid { --worker-columns: 6; }
+  .hero-worker:nth-child(n + 25) { display: none; }
+}
+@media (64rem <= width < 76rem) {
+  .hero-worker:nth-child(n + 21) { display: none; }
+}
+@media (40rem < width < 64rem) {
+  .hero-worker:nth-child(n + 17) { display: none; }
 }
 @media (max-width: 47.99rem) {
   .hero-copy h1 { max-width: 13ch; }
@@ -518,8 +525,6 @@ nav a:hover { text-decoration: underline; }
   .home-service-grid { grid-template-columns: minmax(0, 1fr); }
   .home-service-grid > li:nth-child(n) { grid-column: auto; }
   .home-hero {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
     gap: 1.25rem;
     min-height: auto;
   }
@@ -527,8 +532,7 @@ nav a:hover { text-decoration: underline; }
     content: "";
     position: absolute;
     z-index: -1;
-    inset-block: 0;
-    inset-inline: calc(50% - 50vw);
+    inset: 0;
     background-color: #eaf4f2;
     background-image: radial-gradient(circle at center, rgb(103 155 156 / 18%) 1px, transparent 1px);
     background-size: .75rem .75rem;
@@ -571,7 +575,9 @@ nav a:hover { text-decoration: underline; }
   }
   .hero-worker .worker-icon { width: 1rem; height: 1rem; }
   .hero-worker strong { font-size: .6875rem; line-height: 1.2; }
-  .hero-worker-description { display: none; }
+  .hero-worker:nth-child(n + 9) { display: none; }
+  .hero-worker-description { max-height: 3.5rem; }
+  .hero-worker:hover .hero-worker-outcomes, .hero-worker:focus-visible .hero-worker-outcomes { max-height: 10rem; }
 }
 @media (max-width: 29rem) {
   .home-service-grid { gap: .5rem; }

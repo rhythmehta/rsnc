@@ -370,7 +370,7 @@ function renderServices() {
 
 function homeBody() {
   return `<main id="main" class="home">
-    <section class="site-wrap home-hero" aria-labelledby="home-title">
+    <section class="home-hero" aria-labelledby="home-title">
       <div class="hero-copy">
         <h1 id="home-title">${escapeHtml(homePage.h1)}</h1>
         <p class="summary">${escapeHtml(homePage.summary)}</p>

@@ -127,11 +127,18 @@ export const homePage: SeoPage = {
 };
 
 export const heroWorkers: readonly HeroWorker[] = [
+  { title: "Virtual assistant", description: "Sort inboxes and draft replies", outcomes: ["Surface urgent messages first", "Draft routine replies from your playbook", "Turn actionable threads into tasks"], icon: "inbox" },
   { title: "Operations coordinator", description: "Route requests and flag exceptions", outcomes: ["Check for missing details", "Prepare approvals for the right owner", "Measure time from request to assignment"], icon: "list-checks" },
   { title: "Customer support agent", description: "Triage incoming tickets", outcomes: ["Group tickets by issue", "Draft replies from approved material", "Measure first response time"], icon: "inbox" },
   { title: "Inbound sales rep", description: "Qualify and route new leads", outcomes: ["Check for matching accounts", "Route by territory or product", "Measure time to first follow-up"], icon: "messages-square" },
+  { title: "Bookkeeping assistant", description: "Match receipts to transactions", outcomes: ["Flag missing receipts before close", "Suggest categories from your rules", "Queue unmatched items for review"], icon: "credit-card" },
+  { title: "Project coordinator", description: "Track deadlines and handoffs", outcomes: ["Flag blocked work before deadlines", "Collect updates from task owners", "Draft a weekly client status brief"], icon: "list-checks" },
+  { title: "Appointment scheduler", description: "Book and reschedule appointments", outcomes: ["Offer slots that fit your booking rules", "Send reminders before visits", "Offer cancelled slots to the waitlist"], icon: "clipboard-check" },
+  { title: "Ecommerce catalog assistant", description: "Prepare listings from supplier data", outcomes: ["Build variant records from supplier sheets", "Flag missing specs before launch", "Draft listing updates for approval"], icon: "book-open" },
   { title: "Outbound sales rep", description: "Research accounts and draft follow-ups", outcomes: ["Summarize account context", "Prepare drafts for review", "Measure research time per account"], icon: "send" },
   { title: "Order fulfillment coordinator", description: "Flag orders at risk of shipping late", outcomes: ["Check order and shipment status", "Route delays before dispatch", "Track late shipments"], icon: "clipboard-check" },
+  { title: "Returns coordinator", description: "Check returns against your policy", outcomes: ["Verify order and eligibility details", "Draft return instructions", "Route refund exceptions for approval"], icon: "file-input" },
+  { title: "CRM data assistant", description: "Clean up duplicate or incomplete records", outcomes: ["Flag likely duplicates for review", "Find missing fields in approved sources", "Prepare updates for your CRM"], icon: "file-text" },
   { title: "Finance analyst", description: "Prepare reports for close", outcomes: ["Gather figures from approved sources", "Flag gaps for review", "Measure report preparation time"], icon: "credit-card" },
   { title: "Accounts payable clerk", description: "Match invoices to orders", outcomes: ["Find matching purchase orders", "Route discrepancies to staff", "Measure manual touches per invoice"], icon: "file-text" },
   { title: "HR coordinator", description: "Route employee requests", outcomes: ["Find the relevant policy", "Send sensitive cases to staff", "Measure time to assignment"], icon: "users" },
@@ -141,6 +148,7 @@ export const heroWorkers: readonly HeroWorker[] = [
   { title: "Procurement coordinator", description: "Check vendor requests against policy", outcomes: ["Check for required documents", "Route exceptions to buyers", "Measure approval cycle time"], icon: "clipboard-check" },
   { title: "Customer success manager", description: "Surface account risks and next steps", outcomes: ["Gather account history", "Prepare a follow-up for review", "Measure account preparation time"], icon: "message-square-text" },
   { title: "Marketing coordinator", description: "Adapt campaign content for review", outcomes: ["Apply brand and channel guidelines", "Draft variants from one brief", "Measure time to a usable draft"], icon: "book-open" },
+  { title: "Email marketing assistant", description: "Build campaign drafts from a brief", outcomes: ["Draft variations for each segment", "Check links and tracking tags", "Prepare a send checklist for approval"], icon: "send" },
   { title: "Field service dispatcher", description: "Match service jobs to available crews", outcomes: ["Check skills and availability", "Flag scheduling conflicts", "Track time to assign a job"], icon: "list-checks" },
   { title: "Social media manager", description: "Draft posts for approval", outcomes: ["Adapt material for each channel", "Queue drafts for approval", "Measure review and revision time"], icon: "message-square-text" },
   { title: "Compliance analyst", description: "Gather evidence and flag exceptions", outcomes: ["Link evidence to the relevant policy", "Prepare exceptions for human review", "Measure time to prepare evidence"], icon: "shield-check" },

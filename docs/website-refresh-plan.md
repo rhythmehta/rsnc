@@ -12,13 +12,15 @@ The first growth audience is operations leaders at businesses that manually read
 >
 > **Hire AI Workers** · See clients & projects
 
-Use a warm, full-width hero canvas with the RSNC wordmark, ink, and teal reserved for actions and workflow states. Spread a softly fading mosaic across the full hero behind the copy; blur and fade its left side under a light paper scrim to keep the headline, offer, and CTA crisp. Show 20 recognizable mid-market roles, including order fulfillment, accounts receivable, field dispatch, and document processing. Give each role one concise recurring task. Use five columns on desktop and four on tablet. On mobile, keep copy and CTA first, then show a compact two-column role mosaic. Use **Clients**, **AI workers**, and **Services** in navigation.
+Use a warm, full-width hero canvas with the RSNC wordmark, ink, and teal reserved for actions and workflow states. Run the mosaic across the hero with a light paper scrim behind the headline, offer, and CTA. Show 28 roles at 90 rem and above, then 24, 20, and 16 as space narrows. On mobile, keep the copy and CTA first and show eight roles in two columns. Give each role one concise recurring task and three ways to use the worker on hover or keyboard focus. Use **Clients**, **AI workers**, and **Services** in navigation.
+
+Prioritize hires a growing business considers when a recurring queue outgrows its team. For agencies and B2B services, start with inbox triage and project handoffs. For online retailers and distributors, show catalog updates and returns. For appointment businesses, show booking and rebooking. For sales and finance teams, show CRM cleanup, campaign preparation, and receipt matching. These are audience hypotheses informed by U.S. hiring signals. [Upwork SMB hiring report](https://investors.upwork.com/node/12666/pdf) · [Upwork 2026 skills report](https://investors.upwork.com/news-releases/news-release-details/upworks-demand-skills-2026-demand-top-ai-skills-more-doubles-ai)
 
 ## What the visuals communicate
 
 | Section | Visual | What the buyer learns |
 | --- | --- | --- |
-| Hero | A full-hero, softly fading mosaic shows 20 familiar mid-market roles and the recurring tasks a specialized worker can handle | AI workers can take on work a team would otherwise hire for, grounded in company knowledge and rules |
+| Hero | A full-width mosaic adapts from eight to 28 familiar roles and shows the recurring work each can handle | AI workers can take on work a team would otherwise hire for, grounded in company knowledge and rules |
 | Clients & Projects | All 13 public entries with authentic logos or type-only marks and one scope line each | What Resonance has delivered across industries |
 | Company Brain | Each source card displays six recognizable system logos for records and policies or team knowledge channels; connectors flow into the Company Brain, then branch to support, operations, sales, finance, and people workers | How approved sources, scoped access, and human approval give workers the context to act |
 | Services | Five linked cards, with AI Workers and Company Brain above AI Agents, Workflow Automation, and Domain-Tuned Models | What buyers can hire Resonance to build and where to see examples or technical details |
