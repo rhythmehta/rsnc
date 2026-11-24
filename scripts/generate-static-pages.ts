@@ -1,4 +1,4 @@
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { primaryCta as primaryCtaConfig } from "../src/cta.ts";
 import {
@@ -8,6 +8,8 @@ import {
   faqPage,
   faqs,
   homePage,
+  heroWorkers,
+  homeWorkers,
   navLinks,
   processSteps,
   servicePages,
@@ -18,18 +20,6 @@ import {
   type ServicePage,
   type UseCasePage,
 } from "../src/seo/content.ts";
-
-const distDir = join(process.cwd(), "dist");
-const builtIndexPath = join(distDir, "index.html");
-const builtIndex = readFileSync(builtIndexPath, "utf8");
-const assetTags = Array.from(
-  builtIndex.matchAll(/<script\b[^>]*><\/script>|<link\b[^>]*>/g),
-)
-  .map((match) => match[0])
-  .filter((tag) => tag.includes("/assets/"))
-  .join("\n    ");
-
-const isoDate = new Date().toISOString().slice(0, 10);
 
 function escapeHtml(value: string) {
   return value
@@ -48,102 +38,24 @@ function jsonScript(data: unknown) {
   return JSON.stringify(data).replaceAll("</script", "<\\/script");
 }
 
-function routeFile(path: string) {
-  if (path === "/") {
-    return builtIndexPath;
-  }
-
-  return join(distDir, path.replace(/^\/|\/$/g, ""), "index.html");
-}
-
-function writeRoute(path: string, html: string) {
-  const filePath = routeFile(path);
-  mkdirSync(dirname(filePath), { recursive: true });
-  writeFileSync(filePath, html);
-}
-
 function list(items: string[]) {
   return `<ul>${items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`;
 }
 
-function nav() {
-  return `<nav aria-label="Primary">
-    <a href="/">Home</a>
-    ${navLinks.map((link) => `<a href="${link.href}">${escapeHtml(link.label)}</a>`).join("")}
-  </nav>`;
+function primaryCta() {
+  return `<a class="primary-cta" href="${primaryCtaConfig.href}">${primaryCtaConfig.text}<span aria-hidden="true">↗</span></a>`;
 }
 
-function primaryCta(href = primaryCtaConfig.href) {
-  const text = escapeHtml(primaryCtaConfig.text);
-
-  return `<a class="primary-cta" href="${href}" data-contact-modal-trigger>
-    <span class="primary-cta__label">${text}</span>
-    <span class="primary-cta__hover" aria-hidden="true">
-      <span>${text}</span>
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false">
-        <path d="M5 12h14"></path>
-        <path d="m12 5 7 7-7 7"></path>
-      </svg>
-    </span>
-    <span class="primary-cta__fill" aria-hidden="true"></span>
-  </a>`;
+function workerIcon(name: string) {
+  return `<svg class="worker-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="/worker-icons.svg#${name}" /></svg>`;
 }
 
-function contactModal() {
-  return `<div class="contact-modal" data-contact-modal hidden>
-    <button type="button" class="contact-modal__backdrop" data-contact-modal-close aria-label="Close contact popup"></button>
-    <div class="contact-modal__panel" role="dialog" aria-modal="true" aria-labelledby="contact-modal-title">
-      <div class="contact-modal__intro">
-        <p class="eyebrow">AI Strategy Call</p>
-        <h2 id="contact-modal-title">Review the workflow you want AI to improve</h2>
-        <p>Share the process, bottleneck, or business outcome you want to improve. We review every brief directly and come back with a practical first step.</p>
-        <div class="contact-modal__notes">
-          <div>Senior team review within one business day</div>
-          <div>Best fit for AI agents, workflow automation, and production AI applications</div>
-          <div>We look for the best first use case, integration risks, and ROI potential</div>
-        </div>
-      </div>
-      <div class="contact-modal__form">
-        <button type="button" class="contact-modal__close" data-contact-modal-close aria-label="Close contact popup">&times;</button>
-        <div class="contact-modal__frame">
-          <iframe src="${site.formUrl}" loading="lazy" width="100%" height="700" frameborder="0" marginheight="0" marginwidth="0" title="Resonance contact form"></iframe>
-        </div>
-      </div>
-    </div>
+function sourceIcons(sources: readonly [name: string, file: string][]) {
+  return `<div class="brain-source-icons">
+    <ul role="list">
+      ${sources.map(([name, file]) => `<li><img src="/source-${file}.svg" alt="${escapeHtml(name)}" width="24" height="24" loading="lazy" decoding="async" /></li>`).join("")}
+    </ul>
   </div>`;
-}
-
-function contactModalScript() {
-  return `<script>
-(() => {
-  const modal = document.querySelector("[data-contact-modal]");
-  if (!modal) return;
-
-  const closeModal = () => {
-    modal.hidden = true;
-    document.documentElement.classList.remove("contact-modal-open");
-  };
-  const openModal = () => {
-    modal.hidden = false;
-    document.documentElement.classList.add("contact-modal-open");
-    const closeButton = modal.querySelector("[data-contact-modal-close]");
-    if (closeButton instanceof HTMLElement) closeButton.focus();
-  };
-
-  document.querySelectorAll("[data-contact-modal-trigger]").forEach((trigger) => {
-    trigger.addEventListener("click", (event) => {
-      event.preventDefault();
-      openModal();
-    });
-  });
-  modal.querySelectorAll("[data-contact-modal-close]").forEach((trigger) => {
-    trigger.addEventListener("click", closeModal);
-  });
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && !modal.hidden) closeModal();
-  });
-})();
-</script>`;
 }
 
 function commonSchema(page: SeoPage, extra: Record<string, unknown>[] = []) {
@@ -185,7 +97,7 @@ function commonSchema(page: SeoPage, extra: Record<string, unknown>[] = []) {
       name: site.name,
       url: site.url,
       areaServed: "Global",
-      serviceType: "AI agents, workflow automation, and domain-tuned models for B2B operations",
+      serviceType: "Custom AI workers and Company Brain development for B2B teams",
       provider: { "@id": `${site.url}/#organization` },
       description: site.description,
     },
@@ -230,7 +142,7 @@ function commonSchema(page: SeoPage, extra: Record<string, unknown>[] = []) {
   };
 }
 
-function faqSchema(page: SeoPage, items: FaqItem[]) {
+function faqSchema(page: SeoPage, items: FaqItem[], concise = false) {
   return {
     "@type": "FAQPage",
     "@id": `${absoluteUrl(page.path)}#faq`,
@@ -239,22 +151,24 @@ function faqSchema(page: SeoPage, items: FaqItem[]) {
       name: faq.question,
       acceptedAnswer: {
         "@type": "Answer",
-        text: `${faq.answer} ${faq.supporting}`,
+        text: concise ? faq.answer : `${faq.answer} ${faq.supporting}`,
       },
     })),
   };
 }
 
-function pageHead(page: SeoPage, schema: unknown, includeAssets = false) {
+function pageHead(page: SeoPage, schema: unknown) {
   const url = absoluteUrl(page.path);
   const ogImage = absoluteUrl(site.ogImagePath);
 
   return `<head>
     <meta charset="UTF-8" />
+    <meta name="page-type" content="service" />
+    <meta name="site-kind" content="other" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>${escapeHtml(page.title)}</title>
     <meta name="description" content="${escapeHtml(page.metaDescription)}" />
-    <meta name="theme-color" content="#ffffff" />
+    <meta name="theme-color" content="#fafaf6" />
     <meta name="robots" content="index,follow,max-image-preview:large" />
     <link rel="canonical" href="${url}" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
@@ -275,153 +189,221 @@ function pageHead(page: SeoPage, schema: unknown, includeAssets = false) {
     <meta name="twitter:description" content="${escapeHtml(page.metaDescription)}" />
     <meta name="twitter:image" content="${ogImage}" />
     <script type="application/ld+json">${jsonScript(schema)}</script>
-    <style>${staticCss}</style>
-    ${includeAssets ? assetTags : ""}
+    <link rel="stylesheet" href="/site.css" />
   </head>`;
 }
 
-function shell(page: SeoPage, body: string, schema: unknown, includeAssets = false) {
+function shell(page: SeoPage, body: string, schema: unknown) {
   return `<!doctype html>
-<html lang="en">
-  ${pageHead(page, schema, includeAssets)}
+<html lang="en" data-type="service">
+  ${pageHead(page, schema)}
   <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    ${pageHeader()}
     ${body}
-    ${contactModal()}
-    ${contactModalScript()}
+    ${pageFooter()}
   </body>
 </html>
 `;
 }
 
+function brandLink() {
+  return `<a class="brand" href="/" aria-label="Resonance Technology home"><img src="/wordmark.webp" alt="" width="320" height="65" /></a>`;
+}
+
 function pageHeader() {
   return `<header class="site-header">
-    <a class="brand" href="/" aria-label="Resonance Technology home">
-      <img src="${site.logoPath}" alt="Resonance Technology logo" width="64" height="64" />
-      <span>${site.name}</span>
-    </a>
-    ${nav()}
+    <div class="site-wrap header-row">
+      ${brandLink()}
+      <nav aria-label="Primary">
+        ${navLinks.map((link) => `<a href="${link.href}">${escapeHtml(link.label)}</a>`).join("")}
+      </nav>
+    </div>
   </header>`;
+}
+
+function pageFooter() {
+  return `<footer class="site-footer">
+    <div class="site-wrap footer-row">
+      <div>${brandLink()}<p>Custom AI workers for B2B teams.</p></div>
+      <nav aria-label="Footer">
+        ${navLinks.map((link) => `<a href="${link.href}">${escapeHtml(link.label)}</a>`).join("")}
+        <a href="/#company-brain">Company Brain</a>
+        <a href="/faq/">FAQ</a>
+        <a href="/contact/">Contact</a>
+      </nav>
+    </div>
+  </footer>`;
 }
 
 function ctaBlock() {
   return `<section class="cta-band" aria-labelledby="cta-title">
-    <p class="eyebrow">AI Strategy Call</p>
-    <h2 id="cta-title">Review the workflow you want AI to improve</h2>
-    <p>Share the operational process, bottleneck, or outcome you want to improve. We look for fit, integration risk, review requirements, and the most practical first production use case.</p>
-    <div class="actions">
-      ${primaryCta()}
+    <div>
+      <h2 id="cta-title">Start with one AI worker.</h2>
+      <p>Tell us what you want handled. We’ll scope a custom build.</p>
+    </div>
+    ${primaryCta()}
+  </section>`;
+}
+
+function renderFaqs(items: FaqItem[], concise = false) {
+  return `<div class="faq-list">
+    ${items.map((faq) => `<details>
+          <summary>${escapeHtml(faq.question)}</summary>
+          <p>${escapeHtml(faq.answer)}${concise ? "" : ` ${escapeHtml(faq.supporting)}`}</p>
+        </details>`).join("")}
+  </div>`;
+}
+
+const roster = [
+  ...clientWork.filter((client) => client.name !== "Stealth").sort((a, b) => a.name.localeCompare(b.name, "en")),
+  ...clientWork.filter((client) => client.name === "Stealth"),
+];
+
+const homeFaqs = [faqs[1], faqs[6], faqs[4], faqs[5]];
+
+const brainOutcomes = [
+  { label: "Support", icon: "inbox" },
+  { label: "Operations", icon: "clipboard-check" },
+  { label: "Sales", icon: "send" },
+  { label: "Finance", icon: "credit-card" },
+  { label: "People", icon: "users" },
+];
+
+const additionalWorkflows = useCasePages.filter((page) =>
+  page.slug === "knowledge-assistants" || page.slug === "compliance-risk-ai",
+);
+
+function renderHeroMosaic() {
+  return `<div class="hero-mosaic">
+    <ul class="hero-worker-grid" aria-label="Business roles a specialized AI worker can handle" role="list">
+      ${heroWorkers.map(({ title, description, icon }) => `<li class="hero-worker">
+        ${workerIcon(icon)}
+        <span><strong>${escapeHtml(title)}</strong><small>${escapeHtml(description)}</small></span>
+      </li>`).join("")}
+    </ul>
+  </div>`;
+}
+
+function renderClients() {
+  return `<section class="clients-section" id="clients" aria-labelledby="client-work-title">
+    <div class="site-wrap">
+      <h2 id="client-work-title">Clients &amp; Projects</h2>
+      <ul class="client-grid" role="list">
+        ${roster.map((client) => `<li class="client-entry">
+          ${client.logo ? `<div class="client-mark${client.darkLogo ? " client-mark-inverse" : ""}"><img src="${client.logo}" alt="" width="128" height="48" loading="lazy" decoding="async" /></div>` : ""}
+          <h3>${escapeHtml(client.name)}</h3>
+          <p>${escapeHtml(client.description)}</p>
+        </li>`).join("")}
+      </ul>
     </div>
   </section>`;
 }
 
-function renderFaqs(items: FaqItem[]) {
-  return `<div class="faq-list">
-    ${items
-      .map(
-        (faq) => `<article>
-          <h3>${escapeHtml(faq.question)}</h3>
-          <p><strong>${escapeHtml(faq.answer)}</strong></p>
-          <p>${escapeHtml(faq.supporting)}</p>
-        </article>`,
-      )
-      .join("")}
-  </div>`;
+function renderCompanyBrain() {
+  return `<section class="site-wrap company-brain" id="company-brain" aria-labelledby="brain-title">
+    <h2 id="brain-title">How your workers learn your business</h2>
+    <p class="brain-intro">Your systems hold the records. Your team knows how to handle exceptions. We build a Company Brain that brings both together.</p>
+
+    <div class="brain-flow">
+      <div class="brain-knowledge">
+        <div class="brain-source">
+          ${workerIcon("file-text")}
+          <h3>Records and policies</h3>
+          <p>CRM data, playbooks, and product docs</p>
+          ${sourceIcons([["Salesforce", "salesforce"], ["Google Drive", "google-drive"], ["Notion", "notion"], ["Google Docs", "google-docs"], ["HubSpot", "hubspot"], ["Jira", "jira"]])}
+          <span class="brain-signal-track" aria-hidden="true"></span>
+        </div>
+        <div class="brain-source">
+          ${workerIcon("messages-square")}
+          <h3>Team know-how</h3>
+          <p>Handoffs and exception rules captured with your team</p>
+          ${sourceIcons([["Slack", "slack"], ["Gmail", "gmail"], ["Microsoft Teams", "microsoft-teams"], ["Google Chat", "google-chat"], ["Zoom", "zoom"], ["Intercom", "intercom"]])}
+          <span class="brain-signal-track" aria-hidden="true"></span>
+        </div>
+      </div>
+
+      <div class="brain-core">
+        ${workerIcon("brain-circuit")}
+        <h3>Company Brain</h3>
+        <p>Gives each worker the knowledge and rules for its job.</p>
+        <ul role="list">
+          <li>Approved sources</li>
+          <li>Scoped access</li>
+          <li>Human approval for sensitive actions</li>
+        </ul>
+      </div>
+
+      <ul class="brain-workers" aria-label="Teams supported by specialized AI workers" role="list">
+        ${brainOutcomes.map(({ label, icon }) => `<li class="brain-output">
+          ${workerIcon(icon)}
+          <strong>${label}</strong>
+          <span class="brain-signal-track" aria-hidden="true"></span>
+        </li>`).join("")}
+      </ul>
+    </div>
+
+  </section>`;
+}
+
+function renderWorkers() {
+  return `<section class="site-wrap worker-catalog" id="use-cases" aria-labelledby="workers-title">
+    <h2 id="workers-title">AI workers we can build</h2>
+    <ul class="worker-grid" role="list">
+      ${homeWorkers.map(({ title, description, path, icon }) => `<li>
+        <a class="worker-card" href="${path}">
+          ${workerIcon(icon)}
+          <div><h3>${escapeHtml(title)}</h3><p>${escapeHtml(description)}</p></div>
+          <span class="worker-card-arrow" aria-hidden="true">↗</span>
+        </a>
+      </li>`).join("")}
+    </ul>
+
+    <div class="service-links" id="services" aria-labelledby="services-title">
+      <h3 id="services-title">Services</h3>
+      ${servicePages.map((service) => `<a href="${service.path}">${escapeHtml(service.shortTitle)}</a>`).join("")}
+    </div>
+  </section>`;
 }
 
 function homeBody() {
-  return `<div id="root">
-    <main class="seo-page">
-      ${pageHeader()}
-      <section class="hero">
-        <p class="eyebrow">${escapeHtml(homePage.heroEyebrow)}</p>
-        <h1>${escapeHtml(homePage.h1)}</h1>
+  return `<main id="main" class="home">
+    <section class="site-wrap home-hero" aria-labelledby="home-title">
+      <div class="hero-copy">
+        <h1 id="home-title">${escapeHtml(homePage.h1)}</h1>
         <p class="summary">${escapeHtml(homePage.summary)}</p>
-        <p class="service-line">${escapeHtml(homePage.serviceLine)}</p>
         <div class="actions">
           ${primaryCta()}
+          <a class="text-link" href="/#clients">See clients &amp; projects</a>
         </div>
-      </section>
+      </div>
+      ${renderHeroMosaic()}
+    </section>
 
-      <section aria-labelledby="services-title">
-        <p class="eyebrow">What We Build</p>
-        <h2 id="services-title">Production AI systems for operations work</h2>
-        <div class="grid three">
-          ${servicePages
-            .map(
-              (service) => `<a class="card link-card" href="${service.path}">
-                <img src="${service.image}" alt="" width="42" height="42" />
-                <h3>${escapeHtml(service.shortTitle)}</h3>
-                <p>${escapeHtml(service.summary)}</p>
-              </a>`,
-            )
-            .join("")}
-        </div>
-      </section>
+    ${renderClients()}
 
-      <section aria-labelledby="client-work-title">
-        <p class="eyebrow">Selected Client Work</p>
-        <h2 id="client-work-title">Products built with ambitious teams</h2>
-        <p>Experience across healthcare AI, EHR integrations, telehealth, clinical operations, academic research, public services, marketplaces, and connected fitness.</p>
-        <div class="client-grid">
-          ${clientWork
-            .map(
-              (client) => `<article class="client-card">
-                <div class="client-logo">
-                  ${
-                    client.logo
-                      ? `<img src="${client.logo}" alt="${escapeHtml(client.name)} logo" loading="lazy"${client.darkLogo ? ' class="dark-logo"' : ""} />`
-                      : `<span>${escapeHtml(client.name)}</span>`
-                  }
-                </div>
-                <h3>${escapeHtml(client.name)}</h3>
-                <p>${escapeHtml(client.description)}</p>
-              </article>`,
-            )
-            .join("")}
-        </div>
-      </section>
+    ${renderCompanyBrain()}
+    ${renderWorkers()}
 
-      <section aria-labelledby="use-cases-title">
-        <p class="eyebrow">Where AI Creates Value</p>
-        <h2 id="use-cases-title">Use cases for B2B operations leaders</h2>
-        <div class="grid two">
-          ${useCasePages
-            .map(
-              (useCase) => `<a class="card link-card" href="${useCase.path}">
-                <h3>${escapeHtml(useCase.shortTitle)}</h3>
-                <p>${escapeHtml(useCase.summary)}</p>
-              </a>`,
-            )
-            .join("")}
-        </div>
-      </section>
+    <section class="delivery" aria-labelledby="process-title">
+      <div class="site-wrap">
+        <h2 id="process-title">How we deliver</h2>
+        <ol class="process-list" role="list">
+          ${processSteps.map((step) => `<li><h3>${escapeHtml(step.title)}</h3><p>${escapeHtml(step.description)}</p></li>`).join("")}
+        </ol>
+      </div>
+    </section>
 
-      <section aria-labelledby="process-title">
-        <p class="eyebrow">How We Work</p>
-        <h2 id="process-title">Delivery model for live operations</h2>
-        <div class="grid three">
-          ${processSteps
-            .map(
-              (step) => `<article class="card">
-                <p class="step">${escapeHtml(step.step)}</p>
-                <h3>${escapeHtml(step.title)}</h3>
-                <p>${escapeHtml(step.description)}</p>
-              </article>`,
-            )
-            .join("")}
-        </div>
-      </section>
+    <section class="site-wrap home-faq" aria-labelledby="faq-title">
+      <h2 id="faq-title">Before you start</h2>
+      <div>
+        ${renderFaqs(homeFaqs, true)}
+        <a class="text-link" href="/faq/">Read the full FAQ</a>
+      </div>
+    </section>
 
-      <section aria-labelledby="faq-title">
-        <p class="eyebrow">FAQ</p>
-        <h2 id="faq-title">Questions buyers and answer engines ask</h2>
-        ${renderFaqs(faqs)}
-        <p><a href="/faq/">Read the full AI automation FAQ</a></p>
-      </section>
-
-      ${ctaBlock()}
-    </main>
-  </div>`;
+    <div class="site-wrap">${ctaBlock()}</div>
+  </main>`;
 }
 
 function renderServicePage(service: ServicePage) {
@@ -439,8 +421,7 @@ function renderServicePage(service: ServicePage) {
     faqSchema(service, service.faqs),
   ]);
 
-  const body = `<main class="seo-page">
-    ${pageHeader()}
+  const body = `<main id="main" class="site-wrap seo-page">
     <section class="hero compact">
       <p class="eyebrow">${escapeHtml(service.eyebrow)}</p>
       <h1>${escapeHtml(service.h1)}</h1>
@@ -470,7 +451,9 @@ function renderServicePage(service: ServicePage) {
     <section aria-labelledby="examples-title">
       <h2 id="examples-title">Workflow examples</h2>
       <div class="card">${list(service.workflowExamples)}</div>
-      <div class="answer-box"><strong>Anonymized proof:</strong> ${escapeHtml(service.proof)}</div>
+      <div class="service-links" aria-label="More workflow examples">
+        ${additionalWorkflows.map((page) => `<a href="${page.path}">${escapeHtml(page.shortTitle)}</a>`).join("")}
+      </div>
     </section>
 
     <section aria-labelledby="service-faq-title">
@@ -486,8 +469,7 @@ function renderServicePage(service: ServicePage) {
 
 function renderUseCasePage(useCase: UseCasePage) {
   const schema = commonSchema(useCase);
-  const body = `<main class="seo-page">
-    ${pageHeader()}
+  const body = `<main id="main" class="site-wrap seo-page">
     <section class="hero compact">
       <p class="eyebrow">${escapeHtml(useCase.eyebrow)}</p>
       <h1>${escapeHtml(useCase.h1)}</h1>
@@ -510,7 +492,6 @@ function renderUseCasePage(useCase: UseCasePage) {
         <article class="card"><h3>Systems</h3>${list(useCase.systems)}</article>
         <article class="card"><h3>Metrics</h3>${list(useCase.metrics)}</article>
       </div>
-      <div class="answer-box"><strong>Anonymized proof:</strong> ${escapeHtml(useCase.proof)}</div>
     </section>
 
     ${ctaBlock()}
@@ -521,8 +502,7 @@ function renderUseCasePage(useCase: UseCasePage) {
 
 function renderFaqPage() {
   const schema = commonSchema(faqPage, [faqSchema(faqPage, faqs)]);
-  const body = `<main class="seo-page">
-    ${pageHeader()}
+  const body = `<main id="main" class="site-wrap seo-page">
     <section class="hero compact">
       <p class="eyebrow">FAQ</p>
       <h1>${escapeHtml(faqPage.h1)}</h1>
@@ -538,28 +518,22 @@ function renderFaqPage() {
 }
 
 function renderContactPage() {
-  const schema = commonSchema(contactPage);
-  const body = `<main class="seo-page">
-    ${pageHeader()}
-    <section class="hero compact">
-      <p class="eyebrow">Contact</p>
-      <h1>${escapeHtml(contactPage.h1)}</h1>
+  const email = process.env.RSNC_CONTACT_EMAIL?.trim();
+  if (email && !/^[a-z0-9._+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i.test(email)) {
+    throw new Error("RSNC_CONTACT_EMAIL must be a public contact email address.");
+  }
+
+  return shell(contactPage, `<main id="main" class="site-wrap seo-page contact-page">
+    <section class="hero compact" aria-labelledby="contact-title">
+      <h1 id="contact-title">${escapeHtml(contactPage.h1)}</h1>
       <p class="summary">${escapeHtml(contactPage.summary)}</p>
       <div class="actions">
-        ${primaryCta()}
+        <a class="primary-cta" href="${site.formUrl}">Open the project brief <span aria-hidden="true">↗</span></a>
+        ${email ? `<a class="text-link" href="mailto:${email}">Email us instead</a>` : ""}
       </div>
+      <p class="contact-note">Describe the steps and tools involved. Leave out confidential or personal records.</p>
     </section>
-    <section aria-labelledby="fit-title">
-      <h2 id="fit-title">Best fit</h2>
-      <div class="grid three">
-        <article class="card"><h3>AI agents</h3><p>Processes that need context retrieval, multi-step decisions, tool use, and human approval.</p></article>
-        <article class="card"><h3>Workflow automation</h3><p>Operational queues, approvals, handoffs, document review, and system updates.</p></article>
-        <article class="card"><h3>Domain-tuned models</h3><p>Company-specific language, policy, retrieval, evals, latency, or private deployment needs.</p></article>
-      </div>
-    </section>
-  </main>`;
-
-  return shell(contactPage, body, schema);
+  </main>`, commonSchema(contactPage));
 }
 
 function sitemap() {
@@ -569,9 +543,6 @@ ${allStaticPages
   .map(
     (page) => `  <url>
     <loc>${absoluteUrl(page.path)}</loc>
-    <lastmod>${isoDate}</lastmod>
-    <changefreq>${page.path === "/" ? "weekly" : "monthly"}</changefreq>
-    <priority>${page.path === "/" ? "1.0" : "0.8"}</priority>
   </url>`,
   )
   .join("\n")}
@@ -598,11 +569,13 @@ function llmsText() {
 
 > ${site.description}
 
-${site.name} builds production AI systems for B2B operations leaders: AI agents, workflow automation, and domain-tuned models connected to CRM, ERP, support, document, and internal systems.
+${site.name} builds specialized AI workers for B2B teams and the Company Brain that connects them to company knowledge, rules, and tools.
 
 ## Primary Pages
 
 - Home: ${site.url}/
+- Company Brain: ${site.url}/#company-brain
+- AI workers: ${site.url}/#use-cases
 - AI agents: ${absoluteUrl("/services/ai-agents/")}
 - Workflow automation: ${absoluteUrl("/services/workflow-automation/")}
 - Domain-tuned models: ${absoluteUrl("/services/domain-tuned-models/")}
@@ -627,9 +600,9 @@ ${useCasePages
 - Measures ROI through workflow-specific metrics such as manual handling time, cycle time, throughput, error rate, SLA attainment, and data quality.
 - Builds production controls including evals, logs, scoped tool access, fallback paths, and human review gates.
 
-## Selected Client Work
+## Clients & Projects
 
-${clientWork
+${roster
   .map((client) => `- ${client.name}: ${client.description}`)
   .join("\n")}
 
@@ -639,461 +612,17 @@ Workflow review: ${absoluteUrl("/contact/")}
 `;
 }
 
-const staticCss = `
-:root {
-  color-scheme: light;
-  --ink: #0f172a;
-  --muted: #475569;
-  --line: #d8e8ec;
-  --teal: #0f6d7b;
-  --teal-bright: #45bfd3;
-  --soft: #f5fbfc;
-}
-* {
-  box-sizing: border-box;
-}
-body {
-  margin: 0;
-  background: #ffffff;
-  color: var(--ink);
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-}
-.contact-modal-open {
-  overflow: hidden;
-}
-.seo-page a {
-  color: var(--teal);
-  text-decoration: none;
-}
-.seo-page a:hover {
-  text-decoration: underline;
-}
-.seo-page {
-  min-height: 100vh;
-}
-.seo-page .site-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 20px 24px;
-}
-.seo-page .brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  color: var(--ink);
-  font-weight: 700;
-}
-.seo-page .brand img {
-  width: 48px;
-  height: 48px;
-  border-radius: 10px;
-}
-.seo-page nav {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 14px;
-  font-size: 14px;
-}
-.seo-page section {
-  max-width: 1120px;
-  margin: 0 auto;
-  padding: 56px 24px;
-}
-.seo-page .hero {
-  min-height: 560px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-.seo-page .hero.compact {
-  min-height: auto;
-  padding-top: 72px;
-}
-.seo-page .eyebrow,
-.seo-page .step {
-  margin: 0 0 14px;
-  color: var(--teal);
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-}
-.seo-page h1,
-.seo-page h2,
-.seo-page h3 {
-  margin: 0;
-  letter-spacing: 0;
-}
-.seo-page h1 {
-  max-width: 860px;
-  font-size: clamp(40px, 8vw, 76px);
-  line-height: 0.98;
-  font-weight: 500;
-}
-.seo-page h2 {
-  max-width: 760px;
-  font-size: clamp(30px, 4vw, 46px);
-  line-height: 1.05;
-  font-weight: 500;
-}
-.seo-page h3 {
-  font-size: 21px;
-  line-height: 1.2;
-}
-.seo-page p,
-.seo-page li {
-  color: var(--muted);
-  font-size: 17px;
-  line-height: 1.7;
-}
-.seo-page .summary {
-  max-width: 780px;
-  font-size: 21px;
-}
-.seo-page .service-line {
-  color: var(--teal);
-  font-weight: 700;
-}
-.seo-page .actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 24px;
-}
-.seo-page .primary-cta {
-  position: relative;
-  display: inline-block;
-  width: 128px;
-  overflow: hidden;
-  border-radius: 999px;
-  border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.8);
-  color: #111827;
-  padding: 8px;
-  text-align: center;
-  font-weight: 700;
-  line-height: 1.5;
-  text-decoration: none;
-  backdrop-filter: blur(8px);
-}
-.seo-page .primary-cta:hover {
-  color: #111827;
-  text-decoration: none;
-}
-.seo-page .primary-cta__label {
-  position: relative;
-  z-index: 1;
-  display: inline-block;
-  transform: translateX(4px);
-  transition: transform 300ms ease, opacity 300ms ease;
-}
-.seo-page .primary-cta__hover {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  color: #ffffff;
-  opacity: 0;
-  transform: translateX(48px);
-  transition: transform 300ms ease, opacity 300ms ease;
-}
-.seo-page .primary-cta__fill {
-  position: absolute;
-  left: 20%;
-  top: 40%;
-  z-index: 0;
-  width: 8px;
-  height: 8px;
-  border-radius: 8px;
-  background: var(--teal-bright);
-  transform: scale(1);
-  transition: left 300ms ease, top 300ms ease, width 300ms ease, height 300ms ease, transform 300ms ease;
-}
-.seo-page .primary-cta:hover .primary-cta__label {
-  opacity: 0;
-  transform: translateX(48px);
-}
-.seo-page .primary-cta:hover .primary-cta__hover {
-  opacity: 1;
-  transform: translateX(-4px);
-}
-.seo-page .primary-cta:hover .primary-cta__fill {
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  transform: scale(1.8);
-}
-.contact-modal[hidden] {
-  display: none;
-}
-.contact-modal {
-  position: fixed;
-  inset: 0;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-}
-.contact-modal__backdrop {
-  position: absolute;
-  inset: 0;
-  border: 0;
-  background: radial-gradient(circle at top, rgba(69, 191, 211, 0.18), transparent 38%),
-    linear-gradient(135deg, rgba(3, 7, 18, 0.92), rgba(15, 23, 42, 0.84));
-  backdrop-filter: blur(12px);
-  cursor: pointer;
-}
-.contact-modal__panel {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr);
-  width: min(100%, 1024px);
-  max-height: calc(100vh - 48px);
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 32px;
-  background: rgba(255, 255, 255, 0.82);
-  box-shadow: 0 28px 120px rgba(2, 8, 23, 0.45);
-  backdrop-filter: blur(20px);
-}
-.contact-modal__panel::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--teal-bright), transparent);
-}
-.contact-modal__intro {
-  position: relative;
-  overflow: hidden;
-  background: linear-gradient(160deg, #f8fdff 0%, #edf8fb 46%, #e0f5f8 100%);
-  padding: 32px;
-}
-.contact-modal__intro h2 {
-  max-width: 360px;
-  font-size: 34px;
-  font-weight: 300;
-  line-height: 1.08;
-}
-.contact-modal__intro p:not(.eyebrow) {
-  max-width: 380px;
-  font-size: 15px;
-  line-height: 1.65;
-}
-.contact-modal__notes {
-  display: grid;
-  gap: 12px;
-  margin-top: 32px;
-  color: var(--muted);
-  font-size: 14px;
-}
-.contact-modal__notes div {
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.65);
-  padding: 12px 16px;
-  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
-}
-.contact-modal__form {
-  position: relative;
-  background: rgba(255, 255, 255, 0.7);
-  padding: 12px;
-}
-.contact-modal__close {
-  position: absolute;
-  right: 20px;
-  top: 20px;
-  z-index: 2;
-  display: inline-flex;
-  width: 44px;
-  height: 44px;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(226, 232, 240, 0.8);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.9);
-  color: #334155;
-  font-size: 28px;
-  line-height: 1;
-  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
-  cursor: pointer;
-  transition: transform 160ms ease, background 160ms ease;
-}
-.contact-modal__close:hover {
-  background: #ffffff;
-  transform: scale(1.05);
-}
-.contact-modal__frame {
-  overflow: hidden;
-  border: 1px solid rgba(226, 232, 240, 0.8);
-  border-radius: 22px;
-  background: #ffffff;
-  box-shadow: inset 0 2px 4px rgba(15, 23, 42, 0.06);
-}
-.contact-modal__frame iframe {
-  display: block;
-  width: 100%;
-  border: 0;
-}
-.seo-page .grid {
-  display: grid;
-  gap: 18px;
-  margin-top: 28px;
-}
-.seo-page .grid.two {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-.seo-page .grid.three {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-.seo-page .client-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 18px;
-  margin-top: 28px;
-}
-.seo-page .client-card {
-  min-height: 248px;
-  border: 1px solid var(--line);
-  border-radius: 22px;
-  background: linear-gradient(180deg, #ffffff 0%, var(--soft) 100%);
-  padding: 20px;
-}
-.seo-page .client-logo {
-  display: flex;
-  height: 80px;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #e2e8f0;
-  border-radius: 18px;
-  background: #ffffff;
-  padding: 16px;
-}
-.seo-page .client-logo img {
-  display: block;
-  max-width: 100%;
-  max-height: 48px;
-  object-fit: contain;
-  filter: grayscale(1);
-  opacity: 0.78;
-}
-.seo-page .client-logo img.dark-logo {
-  filter: grayscale(1) brightness(0);
-}
-.seo-page .client-logo span {
-  color: #64748b;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-align: center;
-  text-transform: uppercase;
-}
-.seo-page .client-card h3 {
-  margin-top: 20px;
-  font-size: 18px;
-}
-.seo-page .client-card p {
-  margin-bottom: 0;
-  font-size: 14px;
-  line-height: 1.6;
-}
-.seo-page .card,
-.seo-page .answer-box,
-.seo-page .cta-band {
-  border: 1px solid var(--line);
-  border-radius: 18px;
-  background: linear-gradient(180deg, #ffffff 0%, var(--soft) 100%);
-  padding: 24px;
-}
-.seo-page .link-card {
-  display: block;
-  color: var(--ink);
-}
-.seo-page .link-card:hover {
-  border-color: var(--teal-bright);
-  text-decoration: none;
-}
-.seo-page .card img {
-  display: block;
-  margin-bottom: 18px;
-}
-.seo-page .answer-box {
-  max-width: 880px;
-  margin-top: 24px;
-  color: var(--muted);
-  font-size: 17px;
-  line-height: 1.7;
-}
-.seo-page .faq-list {
-  display: grid;
-  gap: 16px;
-  margin-top: 28px;
-}
-.seo-page .faq-list article {
-  border-bottom: 1px solid var(--line);
-  padding-bottom: 18px;
-}
-.seo-page .cta-band {
-  margin-bottom: 56px;
-}
-@media (max-width: 820px) {
-  .seo-page .site-header {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-  .seo-page nav {
-    justify-content: flex-start;
-  }
-  .seo-page .grid.two,
-  .seo-page .grid.three,
-  .seo-page .client-grid {
-    grid-template-columns: 1fr;
-  }
-  .seo-page .hero {
-    min-height: auto;
-    padding-top: 56px;
-  }
-  .contact-modal {
-    padding: 16px;
-  }
-  .contact-modal__panel {
-    grid-template-columns: 1fr;
-    overflow-y: auto;
-  }
-  .contact-modal__intro {
-    padding: 24px;
-  }
-  .contact-modal__intro h2 {
-    font-size: 30px;
-  }
-  .contact-modal__frame iframe {
-    height: 640px;
-  }
-}
-`;
-
 const clientWorkSchema = {
   "@type": "ItemList",
-  "@id": `${site.url}/#selected-client-work`,
-  name: "Selected client work",
-  numberOfItems: clientWork.length,
-  itemListElement: clientWork.map((client, index) => ({
+  "@id": `${site.url}/#clients`,
+  name: "Clients & Projects",
+  numberOfItems: roster.length,
+  itemListElement: roster.map((client, index) => ({
     "@type": "ListItem",
     position: index + 1,
     item: {
       "@type": "CreativeWork",
-      name: `${client.name} project`,
+      name: client.name,
       description: client.description,
       about: {
         "@type": "Organization",
@@ -1105,42 +634,53 @@ const clientWorkSchema = {
 };
 
 const homeSchema = commonSchema(homePage, [
-  faqSchema(homePage, faqs),
+  faqSchema(homePage, homeFaqs, true),
   clientWorkSchema,
 ]);
 
-writeRoute("/", shell(homePage, homeBody(), homeSchema, true));
-for (const service of servicePages) {
-  writeRoute(service.path, renderServicePage(service));
+const notFound = `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex" />
+  <title>Page not found | Resonance Technology</title>
+  <link rel="stylesheet" href="/site.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  ${pageHeader()}
+  <main id="main" class="site-wrap seo-page">
+    <section class="hero compact"><h1>Page not found</h1><p><a href="/">Go to the homepage</a></p></section>
+  </main>
+  ${pageFooter()}
+</body>
+</html>
+`;
+
+export function writeSite(root: string): string[] {
+  const pages: [string, string][] = [
+    ["index.html", shell(homePage, homeBody(), homeSchema)],
+    ...servicePages.map((page): [string, string] => [`${page.path.slice(1)}index.html`, renderServicePage(page)]),
+    ...useCasePages.map((page): [string, string] => [`${page.path.slice(1)}index.html`, renderUseCasePage(page)]),
+    [`${faqPage.path.slice(1)}index.html`, renderFaqPage()],
+    [`${contactPage.path.slice(1)}index.html`, renderContactPage()],
+    ["404.html", notFound],
+  ];
+  return pages.map(([page, html]) => {
+    const file = join(root, page);
+    mkdirSync(dirname(file), { recursive: true });
+    writeFileSync(file, html);
+    return file;
+  });
 }
-for (const useCase of useCasePages) {
-  writeRoute(useCase.path, renderUseCasePage(useCase));
+
+export function discoveryFiles(): Record<string, string> {
+  const llms = llmsText();
+  return {
+    "sitemap.xml": sitemap(),
+    "robots.txt": robots(),
+    "llms.txt": llms,
+    "llms.text": llms,
+  };
 }
-writeRoute(faqPage.path, renderFaqPage());
-writeRoute(contactPage.path, renderContactPage());
-writeFileSync(join(distDir, "sitemap.xml"), sitemap());
-writeFileSync(join(distDir, "robots.txt"), robots());
-writeFileSync(join(distDir, "llms.txt"), llmsText());
-writeFileSync(join(distDir, "llms.text"), llmsText());
-
-const hostingConfigPath = join(process.cwd(), ".openai", "hosting.json");
-const distHostingDir = join(distDir, ".openai");
-const distServerDir = join(distDir, "server");
-
-mkdirSync(distHostingDir, { recursive: true });
-mkdirSync(distServerDir, { recursive: true });
-writeFileSync(
-  join(distHostingDir, "hosting.json"),
-  readFileSync(hostingConfigPath),
-);
-writeFileSync(
-  join(distServerDir, "index.js"),
-  `export default {
-  fetch(request, env) {
-    return env.ASSETS.fetch(request);
-  },
-};
-`,
-);
-
-console.log(`Generated ${allStaticPages.length} static pages, sitemap.xml, robots.txt, llms.txt, and llms.text.`);

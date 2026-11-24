@@ -1,5 +1,3 @@
-import { primaryCta } from "../cta";
-
 export interface LinkItem {
   label: string;
   href: string;
@@ -59,6 +57,19 @@ export interface SeoPage {
   summary: string;
 }
 
+interface HomeWorker {
+  title: string;
+  description: string;
+  path: `/use-cases/${string}/`;
+  icon: string;
+}
+
+export interface HeroWorker {
+  title: string;
+  description: string;
+  icon: string;
+}
+
 export interface ClientWork {
   name: string;
   description: string;
@@ -79,34 +90,96 @@ export const site = {
   url: "https://rsnc.tech",
   logoPath: "/rsnc-tech-company-logo.png",
   ogImagePath: "/og-resonance-technology.png",
-  formUrl: primaryCta.href,
+  formUrl: "https://app.youform.com/forms/r9h71i28",
   foundingDate: "2025",
   description:
-    "Resonance Technology builds AI agents, workflow automation, and domain-tuned models for B2B operations teams.",
+    "Resonance Technology builds specialized AI workers for B2B teams and a Company Brain that connects them to approved knowledge, rules, and tools.",
 };
 
 export const navLinks: LinkItem[] = [
-  { label: "AI Agents", href: "/services/ai-agents/" },
-  { label: "Workflow Automation", href: "/services/workflow-automation/" },
-  { label: "Models", href: "/services/domain-tuned-models/" },
-  { label: "FAQ", href: "/faq/" },
-  { label: "Contact", href: "/contact/" },
+  { label: "Clients", href: "/#clients" },
+  { label: "AI workers", href: "/#use-cases" },
+  { label: "Services", href: "/#services" },
 ];
 
-export const homePage: SeoPage & {
-  heroEyebrow: string;
-  serviceLine: string;
-} = {
+export const homePage: SeoPage = {
   path: "/",
-  title: "Healthcare AI and B2B Workflow Automation | Resonance Technology",
-  metaDescription:
-    "Resonance Technology builds healthcare AI, EHR-integrated platforms, telehealth products, AI agents, and workflow automation for US and global teams.",
-  h1: "AI agents and workflow automation for B2B operations",
-  heroEyebrow: "Production AI for B2B operations",
+  title: "Custom AI Workers and Company Brain | Resonance Technology",
+  metaDescription: site.description,
+  h1: "Automate the work round the clock.",
   summary:
-    "Resonance Technology helps operations, support, revenue, and knowledge teams replace repetitive manual work with reliable AI systems connected to CRM, ERP, support, and internal tools.",
-  serviceLine: "AI agents • Workflow automation • Domain-tuned models",
+    "AI workers for the roles you’d otherwise hire, grounded in your company’s knowledge, rules, and tools.",
 };
+
+export const heroWorkers: readonly HeroWorker[] = [
+  { title: "Operations coordinator", description: "Route requests and flag exceptions", icon: "list-checks" },
+  { title: "Customer support agent", description: "Triage incoming tickets", icon: "inbox" },
+  { title: "Inbound sales rep", description: "Qualify and route new leads", icon: "messages-square" },
+  { title: "Outbound sales rep", description: "Research accounts and draft follow-ups", icon: "send" },
+  { title: "Finance analyst", description: "Prepare reports for close", icon: "credit-card" },
+  { title: "Accounts payable clerk", description: "Match invoices to orders", icon: "file-text" },
+  { title: "HR coordinator", description: "Route employee requests", icon: "users" },
+  { title: "Recruiting coordinator", description: "Schedule interviews and prep briefs", icon: "users" },
+  { title: "IT help desk analyst", description: "Handle access and setup requests", icon: "shield-check" },
+  { title: "Procurement coordinator", description: "Check vendor requests against policy", icon: "clipboard-check" },
+  { title: "Customer success manager", description: "Surface account risks and next steps", icon: "message-square-text" },
+  { title: "Marketing coordinator", description: "Adapt campaign content for review", icon: "book-open" },
+  { title: "Social media manager", description: "Draft posts for approval", icon: "message-square-text" },
+  { title: "Compliance analyst", description: "Gather evidence and flag exceptions", icon: "shield-check" },
+  { title: "Data analyst", description: "Summarize recurring reports", icon: "list-checks" },
+  { title: "Knowledge specialist", description: "Find policy answers with sources", icon: "book-open" },
+];
+
+export const homeWorkers: readonly HomeWorker[] = [
+  {
+    title: "Support triage",
+    description: "Sorts new tickets and routes exceptions.",
+    path: "/use-cases/customer-support-ai/",
+    icon: "inbox",
+  },
+  {
+    title: "Response drafting",
+    description: "Drafts replies using account context and approved support material.",
+    path: "/use-cases/customer-support-ai/",
+    icon: "message-square-text",
+  },
+  {
+    title: "Request intake",
+    description: "Extracts key details and prepares a task for review.",
+    path: "/use-cases/operations-ai/",
+    icon: "file-input",
+  },
+  {
+    title: "Approval prep",
+    description: "Assembles records and documents for a human decision.",
+    path: "/use-cases/operations-ai/",
+    icon: "clipboard-check",
+  },
+  {
+    title: "Sales follow-up",
+    description: "Drafts the next message using account context.",
+    path: "/use-cases/revenue-operations-ai/",
+    icon: "send",
+  },
+  {
+    title: "CRM record review",
+    description: "Flags incomplete records and prepares updates.",
+    path: "/use-cases/revenue-operations-ai/",
+    icon: "list-checks",
+  },
+  {
+    title: "Internal knowledge",
+    description: "Answers staff questions with links to approved sources.",
+    path: "/use-cases/knowledge-assistants/",
+    icon: "book-open",
+  },
+  {
+    title: "Compliance review prep",
+    description: "Gathers evidence and flags policy exceptions for review.",
+    path: "/use-cases/compliance-risk-ai/",
+    icon: "shield-check",
+  },
+];
 
 export const servicePages: ServicePage[] = [
   {
@@ -395,22 +468,16 @@ export const useCasePages: UseCasePage[] = [
 
 export const processSteps = [
   {
-    step: "01",
-    title: "Identify the highest-value workflow",
-    description:
-      "Map one frequent operational workflow, define the decision points, and choose the metric that will prove ROI.",
+    title: "Map and measure",
+    description: "Pick a recurring workflow and measure where time or effort goes today.",
   },
   {
-    step: "02",
-    title: "Build and validate in production conditions",
-    description:
-      "Connect the right systems, add evals and review paths, and test against real examples before broad rollout.",
+    title: "Validate",
+    description: "Connect your tools and test decisions and review paths on representative cases.",
   },
   {
-    step: "03",
-    title: "Deploy, monitor, and iterate",
-    description:
-      "Launch with logs, controls, fallback behavior, and a feedback loop tied to the business metric.",
+    title: "Deploy and monitor",
+    description: "Roll out with scoped permissions, logs, and a clear owner for exceptions.",
   },
 ];
 
@@ -418,89 +485,89 @@ export const clientWork: ClientWork[] = [
   {
     name: "Stealth",
     description:
-      "Plastic surgery AI simulation product.",
+      "Plastic surgery AI simulation",
   },
   {
     name: "Centering Healthcare Institute",
     description:
-      "Community platform for care providers with agentic assistance.",
-    logo: "/clients/centering-healthcare-institute.png",
+      "Community platform for care providers",
+    logo: "/clients/centering-healthcare-institute.webp",
     url: "https://centeringhealthcare.org/",
   },
   {
     name: "Wendi",
     description:
-      "AI clinic virtual assistant integrated with multiple EHR systems.",
-    logo: "/clients/wendi.png",
+      "Multi-EHR clinic assistant",
+    logo: "/clients/wendi.webp",
     url: "https://www.getwendi.com/",
   },
   {
     name: "LEARN Behavioral",
     description:
-      "Patient intake platform supporting ABA therapy operations.",
+      "Patient intake platform for ABA therapy",
     logo: "/clients/learn-behavioral.svg",
     url: "https://learnbehavioral.com/",
   },
   {
     name: "Fertility Answers",
     description:
-      "AI fertility product built with IBM Watson.",
-    logo: "/clients/fertility-answers.png",
+      "AI fertility product using IBM Watson",
+    logo: "/clients/fertility-answers.webp",
     url: "https://fertility.medanswers.com/",
   },
   {
     name: "Colliga Apps",
     description:
-      "Academic research, clinical trials, digital participation, and course platform.",
-    logo: "/clients/colliga-apps.png",
+      "Research, clinical trials, and course platform",
+    logo: "/clients/colliga-apps.webp",
     url: "https://colliga.io/",
   },
   {
     name: "TadHealth",
     description:
-      "Insurance claims and billing module for school-based healthcare.",
-    logo: "/clients/tadhealth.png",
+      "School-based healthcare claims and billing",
+    logo: "/clients/tadhealth.webp",
     url: "https://www.tadhealth.com/",
   },
   {
     name: "TelMD",
     description:
-      "Two-sided B2C telehealth platform for patients and providers.",
-    logo: "/clients/telmd.png",
+      "Telehealth platform for patients and providers",
+    logo: "/clients/telmd.webp",
     url: "https://telmd.com/",
   },
   {
     name: "HomeMeds",
     description:
-      "Preventive care and healthcare automation product.",
-    logo: "/clients/homemeds.jpg",
+      "Preventive care and healthcare automation",
+    logo: "/clients/homemeds.webp",
     url: "https://www.homemeds.org/",
   },
   {
     name: "SOFLETE",
     description:
-      "Machine learning and smart wearable-integrated fitness app.",
-    logo: "/clients/soflete.png",
+      "Fitness app with wearable integration",
+    logo: "/clients/soflete.webp",
     darkLogo: true,
     url: "https://soflete.com/",
   },
   {
     name: "Official Black Wall Street",
     description:
-      "Marketplace for Black-owned businesses.",
-    logo: "/clients/official-black-wall-street.png",
+      "Marketplace for Black-owned businesses",
+    logo: "/clients/official-black-wall-street.webp",
     url: "https://officialblackwallstreet.com/",
   },
   {
     name: "Argot",
     description:
-      "Intelligent social networking platform with automatic connections.",
+      "Social network with automatic connections",
   },
   {
     name: "Los Angeles County DCFS",
     description:
-      "Digital product work for the Department of Children and Family Services.",
-    logo: "/clients/la-county-dcfs.png",
+      "Digital tools for child and family services",
+    logo: "/clients/la-county-dcfs.webp",
     url: "https://dcfs.lacounty.gov/",
   },
 ];
@@ -566,12 +633,12 @@ export const faqs: FaqItem[] = [
 
 export const contactPage: SeoPage = {
   path: "/contact/",
-  title: "Contact Resonance Technology | AI Workflow Review",
+  title: "Hire AI Workers | Resonance Technology",
   metaDescription:
-    "Contact Resonance Technology to review a B2B operations workflow for AI agents, workflow automation, or domain-tuned model development.",
-  h1: "Review the workflow you want AI to improve",
+    "Start a custom AI worker project with Resonance Technology. Tell us what task you want handled and the tools or rules it depends on.",
+  h1: "Tell us what you want an AI worker to handle.",
   summary:
-    "Share the process, bottleneck, or operational outcome you want to improve. Resonance reviews briefs for fit, integration risk, and practical first steps.",
+    "Share one recurring task and the tools or rules it depends on. We’ll review what a custom AI worker would need and where to start.",
 };
 
 export const faqPage: SeoPage = {

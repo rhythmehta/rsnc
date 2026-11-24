@@ -1,4 +1,4 @@
 export const primaryCta = {
-  text: "Let's Talk",
-  href: "https://app.youform.com/forms/r9h71i28",
+  text: "Hire AI Workers",
+  href: "/contact/",
 } as const;
