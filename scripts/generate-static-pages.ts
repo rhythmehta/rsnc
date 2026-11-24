@@ -281,7 +281,7 @@ function renderHeroMosaic() {
       ${heroWorkers.map(({ title, description, outcomes, icon }) => `<li class="hero-worker" tabindex="0">
         ${workerIcon(icon)}
         <div class="hero-worker-copy"><strong>${escapeHtml(title)}</strong><small class="hero-worker-description">${escapeHtml(description)}</small>
-          <div class="hero-worker-outcomes"><small>Illustrative potential</small><ul>${outcomes.map((outcome) => `<li>${escapeHtml(outcome)}</li>`).join("")}</ul></div>
+          <div class="hero-worker-outcomes"><ul>${outcomes.map((outcome) => `<li>${escapeHtml(outcome)}</li>`).join("")}</ul></div>
         </div>
       </li>`).join("")}
     </ul>

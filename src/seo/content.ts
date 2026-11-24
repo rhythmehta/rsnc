@@ -113,22 +113,22 @@ export const homePage: SeoPage = {
 };
 
 export const heroWorkers: readonly HeroWorker[] = [
-  { title: "Operations coordinator", description: "Route requests and flag exceptions", outcomes: ["2–4 hrs/week returned", "20–35% faster request routing"], icon: "list-checks" },
-  { title: "Customer support agent", description: "Triage incoming tickets", outcomes: ["+14% issues resolved per hour¹", "5–6 min less on rare issues¹"], icon: "inbox" },
-  { title: "Inbound sales rep", description: "Qualify and route new leads", outcomes: ["Minutes to first lead response", "10–20% more leads covered"], icon: "messages-square" },
-  { title: "Outbound sales rep", description: "Research accounts and draft follow-ups", outcomes: ["1–3 hrs/week less account research", "10–20% more selling time"], icon: "send" },
-  { title: "Finance analyst", description: "Prepare reports for close", outcomes: ["2–5 hrs saved per close", "20–30% less report prep"], icon: "credit-card" },
-  { title: "Accounts payable clerk", description: "Match invoices to orders", outcomes: ["30–50% less manual matching", "Hours faster for clean invoices"], icon: "file-text" },
-  { title: "HR coordinator", description: "Route employee requests", outcomes: ["1–3 hrs/week less request admin", "Same-day answers for routine asks"], icon: "users" },
-  { title: "Recruiting coordinator", description: "Schedule interviews and prep briefs", outcomes: ["1–2 days faster to schedule", "2–4 hrs/week less coordination"], icon: "users" },
-  { title: "IT help desk analyst", description: "Handle access and setup requests", outcomes: ["Minutes to resolve routine asks", "20–40% less queue handling"], icon: "shield-check" },
-  { title: "Procurement coordinator", description: "Check vendor requests against policy", outcomes: ["1–2 days faster request review", "20–35% fewer incomplete submissions"], icon: "clipboard-check" },
-  { title: "Customer success manager", description: "Surface account risks and next steps", outcomes: ["Hours earlier risk visibility", "2–4 hrs/week less account prep"], icon: "message-square-text" },
-  { title: "Marketing coordinator", description: "Adapt campaign content for review", outcomes: ["2–4 hrs saved per campaign", "30–50% faster first drafts"], icon: "book-open" },
-  { title: "Social media manager", description: "Draft posts for approval", outcomes: ["2–3× more draft variants", "1–2 hrs/week less repurposing"], icon: "message-square-text" },
-  { title: "Compliance analyst", description: "Gather evidence and flag exceptions", outcomes: ["Hours less audit evidence chasing", "20–40% faster evidence prep"], icon: "shield-check" },
-  { title: "Data analyst", description: "Summarize recurring reports", outcomes: ["1–3 hrs/week less report prep", "Same-day answers to routine queries"], icon: "list-checks" },
-  { title: "Knowledge specialist", description: "Find policy answers with sources", outcomes: ["Minutes to sourced policy answers", "20–40% fewer repeat expert queries"], icon: "book-open" },
+  { title: "Operations coordinator", description: "Route requests and flag exceptions", outcomes: ["Could return 2–4 hrs/week", "Could route work 20–35% faster", "Keep critical work moving after hours"], icon: "list-checks" },
+  { title: "Customer support agent", description: "Triage incoming tickets", outcomes: ["Study: 14% more issues resolved/hour¹", "5–6 min less on rare issues¹", "Free experts for high stakes cases"], icon: "inbox" },
+  { title: "Inbound sales rep", description: "Qualify and route new leads", outcomes: ["First response in minutes", "Cover 10–20% more leads", "Turn more demand into pipeline"], icon: "messages-square" },
+  { title: "Outbound sales rep", description: "Research accounts and draft follow-ups", outcomes: ["Save 1–3 hrs/week on research", "Could add 10–20% selling time", "Grow account reach without more reps"], icon: "send" },
+  { title: "Finance analyst", description: "Prepare reports for close", outcomes: ["Save 2–5 hrs each close", "Could cut report prep 20–30%", "Give leaders numbers sooner"], icon: "credit-card" },
+  { title: "Accounts payable clerk", description: "Match invoices to orders", outcomes: ["Cut manual matching by 30–50%", "Clear clean invoices hours sooner", "Protect cash and avoid late fees"], icon: "file-text" },
+  { title: "HR coordinator", description: "Route employee requests", outcomes: ["Save 1–3 hrs/week on admin", "Routine answers the same day", "Scale support without growing the queue"], icon: "users" },
+  { title: "Recruiting coordinator", description: "Schedule interviews and prep briefs", outcomes: ["Schedule 1–2 days sooner", "Save 2–4 hrs/week coordinating", "Keep top candidates moving"], icon: "users" },
+  { title: "IT help desk analyst", description: "Handle access and setup requests", outcomes: ["Resolve routine asks in minutes", "Cut queue handling by 20–40%", "Support more staff without more tickets"], icon: "shield-check" },
+  { title: "Procurement coordinator", description: "Check vendor requests against policy", outcomes: ["Review requests 1–2 days sooner", "Cut incomplete submissions 20–35%", "Protect savings while buying moves faster"], icon: "clipboard-check" },
+  { title: "Customer success manager", description: "Surface account risks and next steps", outcomes: ["See account risk hours earlier", "Save 2–4 hrs/week on account prep", "Act sooner to protect renewals"], icon: "message-square-text" },
+  { title: "Marketing coordinator", description: "Adapt campaign content for review", outcomes: ["Save 2–4 hrs per campaign", "Draft 30–50% faster", "Ship more campaigns with the same team"], icon: "book-open" },
+  { title: "Social media manager", description: "Draft posts for approval", outcomes: ["Create 2–3× more draft options", "Save 1–2 hrs/week repurposing", "Keep every channel consistently active"], icon: "message-square-text" },
+  { title: "Compliance analyst", description: "Gather evidence and flag exceptions", outcomes: ["Spend hours less chasing evidence", "Prep evidence 20–40% faster", "Reduce audit scramble and exposure"], icon: "shield-check" },
+  { title: "Data analyst", description: "Summarize recurring reports", outcomes: ["Save 1–3 hrs/week on reports", "Routine answers the same day", "Spend more time on decisions"], icon: "list-checks" },
+  { title: "Knowledge specialist", description: "Find policy answers with sources", outcomes: ["Get sourced answers in minutes", "Cut repeat expert queries 20–40%", "Keep teams moving as you scale"], icon: "book-open" },
 ];
 
 export const homeWorkers: readonly HomeWorker[] = [
