@@ -9,7 +9,7 @@ import {
   faqs,
   homePage,
   heroWorkers,
-  homeWorkers,
+  homeServices,
   intakePath,
   intakeResources,
   intakeSteps,
@@ -281,7 +281,7 @@ const additionalWorkflows = useCasePages.filter((page) =>
 
 function renderHeroMosaic() {
   return `<div class="hero-mosaic">
-    <ul class="hero-worker-grid" aria-label="Business roles a specialized AI worker can handle" role="list">
+    <ul class="hero-worker-grid" id="use-cases" aria-label="Business roles a specialized AI worker can handle" role="list">
       ${heroWorkers.map(({ title, description, outcomes, icon }) => `<li class="hero-worker" tabindex="0">
         ${workerIcon(icon)}
         <div class="hero-worker-copy"><strong>${escapeHtml(title)}</strong><small class="hero-worker-description">${escapeHtml(description)}</small>
@@ -353,25 +353,18 @@ function renderCompanyBrain() {
   </section>`;
 }
 
-function renderWorkers() {
-  return `<section class="site-wrap worker-catalog" id="use-cases" aria-labelledby="workers-title">
-    <h2 id="workers-title">AI workers we can build</h2>
-    <ul class="worker-grid" role="list">
-      ${homeWorkers.map(({ title, description, path, icon }) => `<li>
-        <a class="worker-card" href="${path}">
+function renderServices() {
+  return `<section class="site-wrap home-services" id="services" aria-labelledby="services-title">
+    <h2 id="services-title">Services</h2>
+    <ul class="home-service-grid" role="list">
+      ${homeServices.map(({ title, description, href, icon }) => `<li>
+        <a class="home-service-card" href="${escapeHtml(href)}">
           ${workerIcon(icon)}
           <div><h3>${escapeHtml(title)}</h3><p>${escapeHtml(description)}</p></div>
-          <span class="worker-card-arrow" aria-hidden="true">↗</span>
+          <span class="home-service-arrow" aria-hidden="true">↗</span>
         </a>
       </li>`).join("")}
     </ul>
-
-    ${intakeLinks()}
-
-    <div class="service-links" id="services" aria-labelledby="services-title">
-      <h3 id="services-title">Services</h3>
-      ${servicePages.map((service) => `<a href="${service.path}">${escapeHtml(service.shortTitle)}</a>`).join("")}
-    </div>
   </section>`;
 }
 
@@ -392,7 +385,7 @@ function homeBody() {
     ${renderClients()}
 
     ${renderCompanyBrain()}
-    ${renderWorkers()}
+    ${renderServices()}
 
     <section class="delivery" aria-labelledby="process-title">
       <div class="site-wrap">
@@ -461,7 +454,8 @@ function renderServicePage(service: ServicePage) {
       <h2 id="examples-title">Workflow examples</h2>
       <div class="card">${list(service.workflowExamples)}</div>
       <div class="service-links" aria-label="More workflow examples">
-        ${additionalWorkflows.map((page) => `<a href="${page.path}">${escapeHtml(page.shortTitle)}</a>`).join("")}
+        ${(service.slug === "ai-agents" ? useCasePages.filter(({ path }) => path !== intakePath) : additionalWorkflows)
+          .map((page) => `<a href="${page.path}">${escapeHtml(page.shortTitle)}</a>`).join("")}
       </div>
       ${service.slug === "workflow-automation" ? intakeLinks() : ""}
     </section>
@@ -641,8 +635,8 @@ ${site.name} builds specialized AI workers for B2B teams and the Company Brain t
 
 ## Services
 
-${servicePages
-  .map((service) => `- ${service.shortTitle}: ${service.summary} (${absoluteUrl(service.path)})`)
+${homeServices
+  .map((service) => `- ${service.title}: ${service.description} (${absoluteUrl(service.href)})`)
   .join("\n")}
 
 ## B2B Operations Use Cases

@@ -12,16 +12,16 @@ The first growth audience is operations leaders at businesses that manually read
 >
 > **Hire AI Workers** · See clients & projects
 
-Use a warm, full-width hero canvas with the RSNC wordmark, ink, and teal reserved for actions and workflow states. Spread a softly fading mosaic across the full hero behind the copy; blur and fade its left side under a light paper scrim to keep the headline, offer, and CTA crisp. Show 16 recognizable mid-market roles, including operations, customer support, inbound and outbound sales, finance, accounts payable, HR, recruiting, IT, procurement, customer success, marketing, social media, compliance, data analysis, and internal knowledge. Give each role one concise recurring task. On mobile, keep copy and CTA first, then show a compact two-column role mosaic. Use **Clients**, **AI workers**, and **Services** in navigation.
+Use a warm, full-width hero canvas with the RSNC wordmark, ink, and teal reserved for actions and workflow states. Spread a softly fading mosaic across the full hero behind the copy; blur and fade its left side under a light paper scrim to keep the headline, offer, and CTA crisp. Show 20 recognizable mid-market roles, including order fulfillment, accounts receivable, field dispatch, and document processing. Give each role one concise recurring task. Use five columns on desktop and four on tablet. On mobile, keep copy and CTA first, then show a compact two-column role mosaic. Use **Clients**, **AI workers**, and **Services** in navigation.
 
 ## What the visuals communicate
 
 | Section | Visual | What the buyer learns |
 | --- | --- | --- |
-| Hero | A full-hero, softly fading mosaic shows 16 familiar mid-market roles and the recurring tasks a specialized worker can handle | AI workers can take on work a team would otherwise hire for, grounded in company knowledge and rules |
+| Hero | A full-hero, softly fading mosaic shows 20 familiar mid-market roles and the recurring tasks a specialized worker can handle | AI workers can take on work a team would otherwise hire for, grounded in company knowledge and rules |
 | Clients & Projects | All 13 public entries with authentic logos or type-only marks and one scope line each | What Resonance has delivered across industries |
 | Company Brain | Each source card displays six recognizable system logos for records and policies or team knowledge channels; connectors flow into the Company Brain, then branch to support, operations, sales, finance, and people workers | How approved sources, scoped access, and human approval give workers the context to act |
-| AI workers we can build | Eight linked examples of worker roles, with an icon and one sentence each | Which recurring tasks they could hire Resonance to build a worker for |
+| Services | Five linked cards, with AI Workers and Company Brain above AI Agents, Workflow Automation, and Domain-Tuned Models | What buyers can hire Resonance to build and where to see examples or technical details |
 | Delivery | **Map and measure → Validate → Deploy and monitor** | How one workflow becomes a production project |
 | Buyer questions | Short answers in native disclosures | How permissions, approvals, scope, and handover work |
 | Contact | **Share one recurring task → Get a recommended first step** | What the custom project inquiry involves and what comes back |

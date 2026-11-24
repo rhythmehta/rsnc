@@ -69,10 +69,10 @@ export interface IntakeResource extends SeoPage {
   sections: ResourceSection[];
 }
 
-interface HomeWorker {
+interface HomeService {
   title: string;
   description: string;
-  path: `/use-cases/${string}/`;
+  href: string;
   icon: string;
 }
 
@@ -131,68 +131,54 @@ export const heroWorkers: readonly HeroWorker[] = [
   { title: "Customer support agent", description: "Triage incoming tickets", outcomes: ["Group tickets by issue", "Draft replies from approved material", "Measure first response time"], icon: "inbox" },
   { title: "Inbound sales rep", description: "Qualify and route new leads", outcomes: ["Check for matching accounts", "Route by territory or product", "Measure time to first follow-up"], icon: "messages-square" },
   { title: "Outbound sales rep", description: "Research accounts and draft follow-ups", outcomes: ["Summarize account context", "Prepare drafts for review", "Measure research time per account"], icon: "send" },
+  { title: "Order fulfillment coordinator", description: "Flag orders at risk of shipping late", outcomes: ["Check order and shipment status", "Route delays before dispatch", "Track late shipments"], icon: "clipboard-check" },
   { title: "Finance analyst", description: "Prepare reports for close", outcomes: ["Gather figures from approved sources", "Flag gaps for review", "Measure report preparation time"], icon: "credit-card" },
   { title: "Accounts payable clerk", description: "Match invoices to orders", outcomes: ["Find matching purchase orders", "Route discrepancies to staff", "Measure manual touches per invoice"], icon: "file-text" },
   { title: "HR coordinator", description: "Route employee requests", outcomes: ["Find the relevant policy", "Send sensitive cases to staff", "Measure time to assignment"], icon: "users" },
   { title: "Recruiting coordinator", description: "Schedule interviews and prep briefs", outcomes: ["Gather panel availability", "Prepare interview packets", "Measure time to schedule"], icon: "users" },
+  { title: "Accounts receivable specialist", description: "Prioritize overdue invoices", outcomes: ["Flag disputed balances", "Draft payment reminders", "Track overdue balances"], icon: "credit-card" },
   { title: "IT help desk analyst", description: "Handle access and setup requests", outcomes: ["Check the request against policy", "Send access changes for approval", "Measure queue handling time"], icon: "shield-check" },
   { title: "Procurement coordinator", description: "Check vendor requests against policy", outcomes: ["Check for required documents", "Route exceptions to buyers", "Measure approval cycle time"], icon: "clipboard-check" },
   { title: "Customer success manager", description: "Surface account risks and next steps", outcomes: ["Gather account history", "Prepare a follow-up for review", "Measure account preparation time"], icon: "message-square-text" },
   { title: "Marketing coordinator", description: "Adapt campaign content for review", outcomes: ["Apply brand and channel guidelines", "Draft variants from one brief", "Measure time to a usable draft"], icon: "book-open" },
+  { title: "Field service dispatcher", description: "Match service jobs to available crews", outcomes: ["Check skills and availability", "Flag scheduling conflicts", "Track time to assign a job"], icon: "list-checks" },
   { title: "Social media manager", description: "Draft posts for approval", outcomes: ["Adapt material for each channel", "Queue drafts for approval", "Measure review and revision time"], icon: "message-square-text" },
   { title: "Compliance analyst", description: "Gather evidence and flag exceptions", outcomes: ["Link evidence to the relevant policy", "Prepare exceptions for human review", "Measure time to prepare evidence"], icon: "shield-check" },
   { title: "Data analyst", description: "Summarize recurring reports", outcomes: ["Find changes in approved reports", "Link findings to their source", "Measure recurring report effort"], icon: "list-checks" },
   { title: "Knowledge specialist", description: "Find policy answers with sources", outcomes: ["Cite the approved source", "Route questions when evidence is missing", "Measure time to a sourced answer"], icon: "book-open" },
+  { title: "Document processing specialist", description: "Turn forms and PDFs into usable records", outcomes: ["Extract required fields", "Flag unclear entries for review", "Track manual entry time"], icon: "file-input" },
 ];
 
-export const homeWorkers: readonly HomeWorker[] = [
+export const homeServices: readonly HomeService[] = [
   {
-    title: "Support triage",
-    description: "Sorts new tickets and routes exceptions.",
-    path: "/use-cases/customer-support-ai/",
+    title: "AI Workers",
+    description: "Give a recurring job its own AI worker. It can triage tickets, prepare approvals, or update your CRM within the limits you set.",
+    href: "/#use-cases",
     icon: "inbox",
   },
   {
-    title: "Response drafting",
-    description: "Drafts replies using account context and approved support material.",
-    path: "/use-cases/customer-support-ai/",
-    icon: "message-square-text",
+    title: "Company Brain",
+    description: "Give AI workers a source they can cite. Connect approved records, policies, and team know-how, with access scoped to each job.",
+    href: "/#company-brain",
+    icon: "brain-circuit",
   },
   {
-    title: "Request intake",
-    description: "Extracts key details and prepares a task for review.",
-    path: intakePath,
-    icon: "file-input",
+    title: "AI Agents",
+    description: "Build AI into your tools for jobs that take several steps, such as checking a case across systems before proposing an update.",
+    href: "/services/ai-agents/",
+    icon: "messages-square",
   },
   {
-    title: "Approval prep",
-    description: "Assembles records and documents for a human decision.",
-    path: intakePath,
+    title: "Workflow Automation",
+    description: "Move requests from inbox to approval to system update. Route exceptions to the right person with the details they need.",
+    href: "/services/workflow-automation/",
     icon: "clipboard-check",
   },
   {
-    title: "Sales follow-up",
-    description: "Drafts the next message using account context.",
-    path: "/use-cases/revenue-operations-ai/",
-    icon: "send",
-  },
-  {
-    title: "CRM record review",
-    description: "Flags incomplete records and prepares updates.",
-    path: "/use-cases/revenue-operations-ai/",
-    icon: "list-checks",
-  },
-  {
-    title: "Internal knowledge",
-    description: "Answers staff questions with links to approved sources.",
-    path: "/use-cases/knowledge-assistants/",
+    title: "Domain-Tuned Models",
+    description: "Adapt AI to your terminology and decision rules. Test it on real examples before it handles specialized work.",
+    href: "/services/domain-tuned-models/",
     icon: "book-open",
-  },
-  {
-    title: "Compliance review prep",
-    description: "Gathers evidence and flags policy exceptions for review.",
-    path: "/use-cases/compliance-risk-ai/",
-    icon: "shield-check",
   },
 ];
 

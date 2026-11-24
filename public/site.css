@@ -67,7 +67,7 @@ nav a:hover { text-decoration: underline; }
   grid-template-columns: minmax(0, 1.12fr) minmax(0, .88fr);
   gap: clamp(2rem, 5.7vw, 5.5rem);
   align-items: center;
-  min-height: min(47rem, 83svh);
+  min-height: clamp(39rem, 83svh, 47rem);
   padding-block: clamp(3rem, 8vw, 7rem);
 }
 .hero-copy {
@@ -141,6 +141,7 @@ nav a:hover { text-decoration: underline; }
   pointer-events: none;
 }
 .hero-worker-grid {
+  --worker-columns: 5;
   list-style: none;
   padding: clamp(.75rem, 1.4vw, 1.25rem);
   margin: 0;
@@ -151,8 +152,8 @@ nav a:hover { text-decoration: underline; }
   width: min(var(--content-width), calc(100% - 2 * var(--gutter)));
   margin-inline: auto;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  grid-template-rows: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(var(--worker-columns), minmax(0, 1fr));
+  grid-auto-rows: minmax(0, 1fr);
   gap: clamp(.5rem, 1vw, .8rem);
 }
 .hero-worker {
@@ -170,7 +171,7 @@ nav a:hover { text-decoration: underline; }
   border-radius: .625rem;
   background: rgb(255 255 255 / 82%);
 }
-.hero-worker:nth-child(4n + 3), .hero-worker:nth-child(4n + 4) { background: rgb(255 255 255 / 90%); }
+.hero-worker:nth-child(5n + 4), .hero-worker:nth-child(5n + 5) { background: rgb(255 255 255 / 90%); }
 .hero-worker:hover, .hero-worker:focus-visible { z-index: 4; }
 .hero-worker .worker-icon { width: 1.25rem; height: 1.25rem; margin-block-start: .05rem; }
 .hero-worker strong, .hero-worker small { display: block; }
@@ -190,7 +191,7 @@ nav a:hover { text-decoration: underline; }
 .hero-worker-outcomes ul { display: grid; gap: .15rem; margin: 0; padding: 0; list-style: none; }
 .hero-worker-outcomes li::before { content: "↗"; margin-inline-end: .25rem; color: var(--teal); }
 .hero-worker:hover .hero-worker-description, .hero-worker:focus-visible .hero-worker-description { max-height: 0; margin-block-start: 0; opacity: 0; }
-.hero-worker:hover .hero-worker-outcomes, .hero-worker:focus-visible .hero-worker-outcomes { max-height: 5rem; opacity: 1; transform: none; }
+.hero-worker:hover .hero-worker-outcomes, .hero-worker:focus-visible .hero-worker-outcomes { max-height: 7rem; opacity: 1; transform: none; }
 @keyframes mosaic-arrive {
   from { transform: translateY(6px) scale(.985); }
 }
@@ -351,16 +352,18 @@ nav a:hover { text-decoration: underline; }
   --signal-path: shape(from 0% 0%, hline to 50%, vline to 100%, hline to 100%);
 }
 
-.worker-catalog { padding-block: clamp(2.5rem, 5vw, 4.5rem) var(--section); }
-.worker-grid {
+.home-services { padding-block: clamp(2.5rem, 5vw, 4.5rem) var(--section); }
+.home-service-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: .8rem;
   list-style: none;
   padding: 0;
-  margin: 1.3rem 0 .85rem;
+  margin: 1.3rem 0 0;
 }
-.worker-card {
+.home-service-grid > li { grid-column: span 2; }
+.home-service-grid > li:nth-child(-n + 2) { grid-column: span 3; }
+.home-service-card {
   display: grid;
   grid-template-columns: 1fr auto;
   align-content: start;
@@ -373,15 +376,15 @@ nav a:hover { text-decoration: underline; }
   color: var(--ink);
   text-decoration: none;
 }
-.worker-card .worker-icon { grid-area: 1 / 1; }
-.worker-card-arrow { grid-area: 1 / 2; color: var(--teal); line-height: 1; }
-.worker-card div { grid-column: 1 / -1; min-width: 0; }
-.worker-card h3 { font-size: 1.0625rem; overflow-wrap: anywhere; }
-.worker-card p { margin-block-start: .3rem; font-size: .9rem; line-height: 1.4; }
-.worker-card:is(:hover, :focus-visible) { border-color: #79a5a6; color: var(--ink); }
-.worker-card:is(:hover, :focus-visible) h3 { text-decoration: underline; text-underline-offset: .18em; }
+.home-service-card .worker-icon { grid-area: 1 / 1; }
+.home-service-arrow { grid-area: 1 / 2; color: var(--teal); line-height: 1; }
+.home-service-card div { grid-column: 1 / -1; min-width: 0; }
+.home-service-card h3 { font-size: 1.0625rem; overflow-wrap: anywhere; }
+.home-service-card p { margin-block-start: .3rem; font-size: .9rem; line-height: 1.4; }
+.home-service-grid > li:nth-child(-n + 2) .home-service-card { background: var(--wash); }
+.home-service-card:is(:hover, :focus-visible) { border-color: #79a5a6; color: var(--ink); }
+.home-service-card:is(:hover, :focus-visible) h3 { text-decoration: underline; text-underline-offset: .18em; }
 .service-links { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0 1.25rem; }
-.service-links h3 { font-size: 1rem; }
 .service-links a { display: inline-flex; align-items: center; min-height: 2.75rem; font-size: .9375rem; }
 .delivery { background: var(--wash); }
 .process-list, .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; }
@@ -493,16 +496,16 @@ nav a:hover { text-decoration: underline; }
     inset: auto 50% 100% auto;
     --signal-path: shape(from 0% 0%, vline to 50%, hline to 100%, vline to 100%);
   }
-  .worker-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 63.99rem) {
   .home-hero {
     display: block;
-    min-height: max(40rem, 82svh);
+    min-height: max(43rem, 82svh);
     padding-block: clamp(3.5rem, 9vw, 6rem);
   }
   .hero-copy { width: min(100%, 33rem); }
   .hero-copy::before { inset-inline-end: -5rem; }
+  .hero-worker-grid { --worker-columns: 4; }
 }
 @media (max-width: 47.99rem) {
   .hero-copy h1 { max-width: 13ch; }
@@ -512,6 +515,8 @@ nav a:hover { text-decoration: underline; }
   .process-list { gap: .6rem; }
 }
 @media (max-width: 40rem) {
+  .home-service-grid { grid-template-columns: minmax(0, 1fr); }
+  .home-service-grid > li:nth-child(n) { grid-column: auto; }
   .home-hero {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
@@ -548,12 +553,11 @@ nav a:hover { text-decoration: underline; }
     border-radius: .875rem;
   }
   .hero-worker-grid {
+    --worker-columns: 2;
     position: relative;
     inset: auto;
     width: 100%;
     padding: .55rem;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-template-rows: none;
     grid-auto-rows: minmax(3.15rem, auto);
     gap: .4rem;
   }
@@ -570,10 +574,10 @@ nav a:hover { text-decoration: underline; }
   .hero-worker-description { display: none; }
 }
 @media (max-width: 29rem) {
-  .worker-grid { grid-template-columns: minmax(0, 1fr); gap: .5rem; }
-  .worker-card { grid-template-columns: auto minmax(0, 1fr) auto; align-items: start; gap: .75rem; }
-  .worker-card div { grid-area: 1 / 2; }
-  .worker-card-arrow { grid-area: 1 / 3; }
+  .home-service-grid { gap: .5rem; }
+  .home-service-card { grid-template-columns: auto minmax(0, 1fr) auto; align-items: start; gap: .75rem; }
+  .home-service-card div { grid-area: 1 / 2; }
+  .home-service-arrow { grid-area: 1 / 3; }
   .header-row { display: block; padding-block: .45rem; }
   .header-row nav { gap: 0 1.25rem; }
 }
@@ -593,11 +597,11 @@ nav a:hover { text-decoration: underline; }
   ::view-transition-new(site-header) { animation: none; }
 
   .primary-cta { transition: background-color 160ms ease-out, transform 160ms var(--ease-out); }
-  .primary-cta > span, .worker-card-arrow { transition: transform 200ms var(--ease-out); }
+  .primary-cta > span, .home-service-arrow { transition: transform 200ms var(--ease-out); }
   .primary-cta:active { transform: translateY(1px); }
   .hero-worker-description, .hero-worker-outcomes { transition: max-height 220ms var(--ease-out), opacity 180ms var(--ease-out), transform 220ms var(--ease-out), margin 220ms var(--ease-out); }
   .primary-cta:focus-visible > span,
-  .worker-card:focus-visible .worker-card-arrow { transform: translate(2px, -2px); }
+  .home-service-card:focus-visible .home-service-arrow { transform: translate(2px, -2px); }
   .hero-worker:not(.hero-worker-feature) { animation: mosaic-arrive 520ms var(--ease-out) both; }
   .hero-worker:nth-child(2) { animation-delay: 45ms; }
   .hero-worker:nth-child(3) { animation-delay: 90ms; }
@@ -610,7 +614,7 @@ nav a:hover { text-decoration: underline; }
   .answer-box::before { animation: answer-accent 440ms var(--ease-out) both; }
 
   @media (hover: hover) {
-    .primary-cta:hover > span, .worker-card:hover .worker-card-arrow { transform: translate(2px, -2px); }
+    .primary-cta:hover > span, .home-service-card:hover .home-service-arrow { transform: translate(2px, -2px); }
   }
 
   @supports (animation-timeline: view()) and (offset-path: shape(from 0% 0%, hline to 100%)) {
