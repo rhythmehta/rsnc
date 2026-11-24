@@ -376,7 +376,6 @@ function homeBody() {
         <p class="summary">${escapeHtml(homePage.summary)}</p>
         <div class="actions">
           ${primaryCta()}
-          <a class="text-link" href="/#clients">See clients &amp; projects</a>
         </div>
       </div>
       ${renderHeroMosaic()}
